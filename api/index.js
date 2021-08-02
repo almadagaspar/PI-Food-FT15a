@@ -21,7 +21,7 @@ const server = require('./src/app.js');
 const { conn } = require('./src/db.js');
 
 // Syncing all the models at once.
-conn.sync({ force: true }).then(() => {    // true, es el valor con el que vino; se borra la BDD cada vez que se reinicia.
+conn.sync({ force: false }).then(() => {    // true, es el valor con el que vino; se borra la BDD cada vez que se reinicia.
   server.listen(3001, () => {
     console.log('%s listening at 3001'); // eslint-disable-line no-console
   });

@@ -6,13 +6,13 @@ require('dotenv').config();    // Importo la configuración de 'dotenv' para pod
 const { API_KEY } = process.env;   // Almaceno en API_KEY la key para poder acceder a la API al usar axios.
 
 
-// Ej:  http://localhost:3001/recipes?query=egg
+// Ej:  http://localhost:3001/recipes?query=apple
 // Ej:  http://localhost:3001/recipes
 
 router.get('/', async (req, res) => {
     // Si se envió del Front un nombre de receta para la busqueda, retorno las 100 recetas cuyo nombre incluya la palabra recibida.
     if (req.query.name) {
-        //// ¡¡¡ FALTARIA CONSIDERAR E INCLUIR LOS JUEGOS DE MI BDD !!!!
+        //// ¡¡¡ FALTARIA CONSIDERAR E INCLUIR LAS RECETAS DE MI BDD !!!!
         recipesAPI = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100&query=${req.query.name}`)
 
         const recipesToSend = recipesAPI.data.results && recipesAPI.data.results.map(recipe => {
