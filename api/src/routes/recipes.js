@@ -34,7 +34,6 @@ router.get('/', async (req, res) => {
         if (recipesToSend.length) return res.json(recipesToSend)
         res.status(404).send({ error: 'No se encontraron recetas con ese nombre' })
 
-
     } else {   // Si NO se envió del Front un nombre de receta para la busqueda, retorno las 100 primeras recetas que me envie la API externa.
        
         // Para que la cantidad de recetas devueltas por la API sea 100 en lugar de solo 10, agrego el flag: &number=100
