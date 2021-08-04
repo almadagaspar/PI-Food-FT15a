@@ -12,32 +12,37 @@ const { Recipe, Diet } = require('../db.js');     // Importo los modelos que nec
 // Ej:  http://localhost:3001/recipes
 
 router.get('/', async (req, res) => {
-    // Si se envió del Front un nombre de receta para la busqueda, retorno las 100 recetas cuyo nombre incluya la palabra recibida.
-    if (req.query.name) {
-        //// ¡¡¡ FALTARIA CONSIDERAR E INCLUIR LAS RECETAS DE MI BDD !!!!
-        const dbRecipe = await Recipe.findAll({
-            // where: {
-            //     name: req.query.name
-            // },
-            attributes: ['id','name', 'createdInDb']
-
+    if (req.query.name) {      // Si se envió un nombre de receta para la busqueda, retorno las 100 recetas cuyo nombre incluya la palabra recibida.
+        
+        const dbRecipes = await Recipe.findAll({
+            attributes: ['id','name', 'createdInDb'],     // Solo quiero estos campos.
+            include: {                                   // Incluto las dietas relacionadas a esta receta.
+                model: Diet,
+                attributes: ['name'],
+                through: { attributes: [] }      // Esto evita que se incluyan los IDs de la tabla intermedia.
+            }
         });
+        const dbRecipesByName = dbRecipes.filter(recipe => recipe.name.toLowerCase().includes(req.query.name.toLowerCase()))
+        
+        
+        //  Cambio la estructura de la propiedad incluida 'diets' para que sea un array de strings en lugar de un array de objetos. 
+        //  "diets": [ { "name": "Ketogenic" }, { "name": "Pescetarian" } ]       =====>     "diets": ["Ketogenic", "Pescetarian" ]
+        let dbRecipesFormated = [];
+        for (let i = 0; i < dbRecipesByName.length; i++) {
+            let recipeFormated = {         // Esta variable representa cada elemento del array de recetas encontradas en la base de datos
+                id: dbRecipesByName[i].id,
+                name: dbRecipesByName[i].name,
+                createdInDb: dbRecipesByName[i].createdInDb,
+                diets: dbRecipesByName[i].diets && dbRecipesByName[i].diets.map(d => d.name)
+            }
+            dbRecipesFormated.push(recipeFormated)
+        }
 
-        console.log('RECETAS DE LA BASE DE DATOS',dbRecipe)
-
-        let recipeByName = await dbRecipe.filter(recipe => recipe.name.toLowerCase().includes(req.query.name.toLocaleLowerCase()))
-
-        recipeByName = recipeByName.recipe.dataValues
-        console.log('RECETAS DE LA BASE DE DATOS FILTRADAS POR NOMBRE',recipeByName)
 
 
+        const apiRecipes = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100&query=${req.query.name}`)
 
-
-
-
-        const recipesAPI = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100&query=${req.query.name}`)
-
-        const recipesToSend = recipesAPI.data.results && recipesAPI.data.results.map(recipe => {
+        const apiRecipesWithDiets = apiRecipes.data.results && apiRecipes.data.results.map(recipe => {
             // Las dietas a las que pertenece cada receta estan en dos lugares distintos, por lo que tengo que unirlas pero evitando que se repitan.
             let extraDiets = [];
             if (recipe.vegetarian && !recipe.diets.includes('vegetarian')) extraDiets.push('vegetarian');
@@ -52,11 +57,13 @@ router.get('/', async (req, res) => {
             }
         })
 
-
-        if (recipesToSend.length) return res.json(recipeByName.concat(recipesToSend))
+        const recipesToSend = dbRecipesFormated.concat(apiRecipesWithDiets);
+        if (recipesToSend.length) return res.json(recipesToSend)
         res.status(404).send({ error: 'No se encontraron recetas con ese nombre' })
 
+
     } else {   // Si NO se envió del Front un nombre de receta para la busqueda, retorno las 100 primeras recetas que me envie la API externa.
+
 
         const dbRecipes = await Recipe.findAll({      // Busco todas las dietas de mi base de datos.
             attributes: ['id', 'name', 'createdInDb'],    // Solo quiero estos campos.
@@ -68,7 +75,7 @@ router.get('/', async (req, res) => {
         })
 
 
-        //  Si encontré recetas en mi base de datos, cambio la estructura de la propiedad incluida 'diets' para que sea un array de strings en lugar de un array de objetos. 
+        //  Cambio la estructura de la propiedad incluida 'diets' para que sea un array de strings en lugar de un array de objetos. 
         //  "diets": [ { "name": "Ketogenic" }, { "name": "Pescetarian" } ]       =====>     "diets": ["Ketogenic", "Pescetarian" ]
         let dbRecipesFormated = [];
         // if (dbRecipes.length) {   // BORRAR ESTE FOR SI NO HAY ERRORES CON MI BASE DE DATOS VACIA.
