@@ -7,8 +7,8 @@ const { API_KEY } = process.env;   // Almaceno en API_KEY la key para poder acce
 
 const { Recipe, Diet } = require('../db.js');     // Importo los modelos que necesito mediante destructuring.
 
-
 // Ej: http://localhost:3001/recipe/3245
+
 
 router.get('/:id', async (req, res) => {
     if (req.params.id.includes('-')) {   // Si el id de la receta que debo buscar contiene un guión, debo buscarlo en mi base de datos.
@@ -23,20 +23,20 @@ router.get('/:id', async (req, res) => {
                         through: { attributes: [] } // Esto evita que se incluyan los IDs de la tabla intermedia.
                     }
                 })
-            
+
             //  Si encontré una receta con el id recibido, cambio la estructura de la propiedad incluida 'diets' para que sea un array de strings en lugar de un array de objetos.
             //  "diets": [ { "name": "Ketogenic" }, { "name": "Pescetarian" } ]       =====>     "diets": ["Ketogenic", "Pescetarian" ]
-            if (dbRecipe) {      
-                    const recipeToSend = {
-                        id: dbRecipe.id,
-                        name: dbRecipe.name,
-                        summary: dbRecipe.summary,
-                        score: dbRecipe.score,
-                        healthScore: dbRecipe.healthScore,
-                        instructions: dbRecipe.instructions,
-                        createdInDb: dbRecipe.createdInDb,
-                        diets: dbRecipe.diets && dbRecipe.diets.map(d => d.name)
-                    }
+            if (dbRecipe) {
+                const recipeToSend = {
+                    id: dbRecipe.id,
+                    name: dbRecipe.name,
+                    summary: dbRecipe.summary,
+                    score: dbRecipe.score,
+                    healthScore: dbRecipe.healthScore,
+                    instructions: dbRecipe.instructions,
+                    createdInDb: dbRecipe.createdInDb,
+                    diets: dbRecipe.diets && dbRecipe.diets.map(d => d.name)
+                }
                 return res.json(recipeToSend) // Envio al Front la receta encontrada.
             }
             // Si NO encontre una receta con ese id, envío el mensaje correspondiente.
@@ -81,8 +81,7 @@ router.get('/:id', async (req, res) => {
 
 
 
-router.post('/', async (req, res) => {
-    // Creo una receta en mi base de datos, con los datos que llegan desde el Front, enviados por body.
+router.post('/', async (req, res) => {     // Creo una receta en mi base de datos, con los datos que llegan desde el Front, enviados por body.
     const { name, summary, score, healthScore, instructions, diets } = req.body;    // Tomo del body la información que necesito para crear la nueva receta.
 
     // Agrego a la tabla 'recipes' una nueva receta. En este caso NO es necesario
@@ -93,12 +92,29 @@ router.post('/', async (req, res) => {
         score: score,
         healthScore: healthScore,
         instructions: instructions,
+        // createdInDb: createdInDb    // ¿¿ PORQUE SELENE RECOMIENDA ENVIAR ESTE CAMPO ?? SI NO SE ENVIA, SE CARGA IGUAL EN TRUE EN LA DB.
     })
-    await newRecipe.addDiets(diets);     // Agrego en la tabla intermedia 'recipe_diet' un registro (recipeId y dietID) por cada genero al que pertenece esta nueva receta.
 
-    res.json(newRecipe)
+    //////////////////////////////////////////
+    // Si se me complica enviar desde el Frond los id de las dietas a las que pertenece una nueva receta creada, remplazar el codigo de esta area
+    // por el que está comentado más abajo, y en vez de enviar los id de las dietas, enviar sus nombres.
+
+
+    await newRecipe.addDiets(diets);     // Agrego en la tabla intermedia 'recipe_diet' un registro (recipeId y dietID) por cada dieta a la que pertenece esta nueva receta.
+    res.json(newRecipe)     // Respondo con toda la información de la nueva receta creada en la DB.
+
+
+    //////////////////////////////////////////
+
+
+    // // Busco en mi DB las dietas que coincidan con las que me llegan por body, y lo guardo en un array para usarlo como parámetro abajo, en .addDiets
+    // let dietsDb = await Diet.findAll({
+    //     where: { name: diets }
+    // })
+
+    // await newRecipe.addDiets(dietsDb);     // Agrego en la tabla intermedia 'recipe_diet' un registro (recipeId y dietID) por cada dieta a la que pertenece esta nueva receta.
+    // res.json(newRecipe)     // Respondo con toda la información de la nueva receta creada en la DB.
 })
-
 
 
 module.exports = router;

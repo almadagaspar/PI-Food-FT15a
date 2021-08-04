@@ -7,9 +7,9 @@ const { API_KEY } = process.env;   // Almaceno en API_KEY la key para poder acce
 
 const { Recipe, Diet } = require('../db.js');     // Importo los modelos que necesito mediante destructuring.
 
-
 // Ej:  http://localhost:3001/recipes?name=apple
 // Ej:  http://localhost:3001/recipes
+
 
 router.get('/', async (req, res) => {
     if (req.query.name) {      // Si se envió un nombre de receta para la busqueda, retorno las 100 recetas cuyo nombre incluya la palabra recibida.
@@ -62,7 +62,7 @@ router.get('/', async (req, res) => {
         res.status(404).send({ error: 'No se encontraron recetas con ese nombre' })
 
 
-    } else {   // Si NO se envió del Front un nombre de receta para la busqueda, retorno las 100 primeras recetas que me envie la API externa.
+    } else {   // Si NO se envió del Front un nombre de receta para la busqueda, retorno las recetas de mi DB, junto con las 100 primeras recetas que me envie la API externa.
 
 
         const dbRecipes = await Recipe.findAll({      // Busco todas las dietas de mi base de datos.
@@ -78,7 +78,6 @@ router.get('/', async (req, res) => {
         //  Cambio la estructura de la propiedad incluida 'diets' para que sea un array de strings en lugar de un array de objetos. 
         //  "diets": [ { "name": "Ketogenic" }, { "name": "Pescetarian" } ]       =====>     "diets": ["Ketogenic", "Pescetarian" ]
         let dbRecipesFormated = [];
-        // if (dbRecipes.length) {   // BORRAR ESTE FOR SI NO HAY ERRORES CON MI BASE DE DATOS VACIA.
         for (let i = 0; i < dbRecipes.length; i++) {
             let recipeFormated = {         // Esta variable representa cada elemento del array de recetas encontradas en la base de datos
                 id: dbRecipes[i].id,
@@ -88,7 +87,6 @@ router.get('/', async (req, res) => {
             }
             dbRecipesFormated.push(recipeFormated)
         }
-        // }
 
         // Para obtener mayor información sobre las recetas, como por ejemplo el tipo de dieta, agrego el flag: &addRecipeInformation=true
         const recipesAPI = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`)
