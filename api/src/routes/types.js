@@ -28,7 +28,7 @@ async function loadDietsInDb() {
         })
     }
 };
-loadDietsInDb();
+// loadDietsInDb();
 
 
 

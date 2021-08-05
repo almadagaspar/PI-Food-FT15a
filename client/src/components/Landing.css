@@ -1,0 +1,13 @@
+* { 
+    margin: 0px; 
+    padding: 0px; 
+}
+
+.Landing {      /*Aplico una imagen de fondo*/
+    background-image: url("../imgs/landingImg.jpg");
+    background-size: auto;
+    background-repeat: no-repeat;
+    height: 900px;
+    background-position: center;
+    text-align: center;
+}
