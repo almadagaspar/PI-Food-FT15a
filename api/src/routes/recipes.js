@@ -11,11 +11,11 @@ const { Recipe, Diet } = require('../db.js');     // Importo los modelos que nec
 // Ej:  http://localhost:3001/recipes
 
 
+
 router.get('/', async (req, res) => {
     if (req.query.name) {      // Si se envió un nombre de receta para la busqueda, retorno las 100 recetas cuyo nombre incluya la palabra recibida.
-        
         const dbRecipes = await Recipe.findAll({
-            attributes: ['id','name', 'createdInDb'],     // Solo quiero estos campos.
+            attributes: ['id', 'name', 'createdInDb'],     // Solo quiero estos campos.
             include: {                                   // Incluto las dietas relacionadas a esta receta.
                 model: Diet,
                 attributes: ['name'],
@@ -23,8 +23,8 @@ router.get('/', async (req, res) => {
             }
         });
         const dbRecipesByName = dbRecipes.filter(recipe => recipe.name.toLowerCase().includes(req.query.name.toLowerCase()))
-        
-        
+
+
         //  Cambio la estructura de la propiedad incluida 'diets' para que sea un array de strings en lugar de un array de objetos. 
         //  "diets": [ { "name": "Ketogenic" }, { "name": "Pescetarian" } ]       =====>     "diets": ["Ketogenic", "Pescetarian" ]
         let dbRecipesFormated = [];
@@ -38,9 +38,12 @@ router.get('/', async (req, res) => {
             dbRecipesFormated.push(recipeFormated)
         }
 
-
-
-        const apiRecipes = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100&query=${req.query.name}`)
+        let apiRecipes = []
+        try {
+             apiRecipes = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=10&query=${req.query.name}`)
+        } catch (error) {
+            console.log("Se genero un error en el back al buscar por nombre", error)
+        }
 
         const apiRecipesWithDiets = apiRecipes.data.results && apiRecipes.data.results.map(recipe => {
             // Las dietas a las que pertenece cada receta estan en dos lugares distintos, por lo que tengo que unirlas pero evitando que se repitan.
@@ -56,10 +59,14 @@ router.get('/', async (req, res) => {
                 diets: extraDiets.concat(recipe.diets)  // Junto todas las dietas de esta receta.
             }
         })
-
         const recipesToSend = dbRecipesFormated.concat(apiRecipesWithDiets);
-        if (recipesToSend.length) return res.json(recipesToSend)
-        res.status(404).send({ error: 'No se encontraron recetas con ese nombre' })
+        // console.log ('******** RECIPES TO SEND',recipesToSend)
+        res.json(recipesToSend)
+        // if (recipesToSend.length) return res.json(recipesToSend)
+        // res.status(404).send({ error: 'No se encontraron recetas con ese nombre' })
+        // console.log('***VA A ENVIAR EL 404')
+        // res.status(404).json(recipesToSend)
+
 
 
     } else {   // Si NO se envió del Front un nombre de receta para la busqueda, retorno las recetas de mi DB, junto con las 100 primeras recetas que me envie la API externa.
@@ -89,7 +96,7 @@ router.get('/', async (req, res) => {
         }
 
         // Para obtener mayor información sobre las recetas, como por ejemplo el tipo de dieta, agrego el flag: &addRecipeInformation=true
-        const recipesAPI = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`)
+        const recipesAPI = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=10`)
 
         const recipesToSend = recipesAPI.data.results.map(recipe => {
             // Las dietas a las que pertenece cada receta estan en dos lugares distintos, por lo que tengo que unirlas pero evitando que se repitan.
