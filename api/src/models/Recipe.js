@@ -42,7 +42,7 @@ module.exports = (sequelize) => {
       defaultValue: 'There are not instructions'
     },
 
-    createdInDb: {
+    createdInDb: {         // BORRAR SI AVANZANDO EN EL PI, NO RESULTA NECESARIO.
       type: DataTypes.BOOLEAN,
       defaultValue: true
     }

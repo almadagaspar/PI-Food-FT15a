@@ -34,7 +34,7 @@ router.get('/:id', async (req, res) => {
                     score: dbRecipe.score,
                     healthScore: dbRecipe.healthScore,
                     instructions: dbRecipe.instructions,
-                    createdInDb: dbRecipe.createdInDb,
+                    createdInDb: dbRecipe.createdInDb,     // BORRAR SI AVANZANDO EN EL PI, NO RESULTA NECESARIO.
                     diets: dbRecipe.diets && dbRecipe.diets.map(d => d.name)
                 }
                 return res.json(recipeToSend) // Envio al Front la receta encontrada.

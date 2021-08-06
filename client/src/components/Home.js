@@ -43,6 +43,12 @@ export default function Home() {
     return (
         <div>
             <NavBar />
+
+            <select>
+                <option value='asc'>Ascendente</option>
+                <option value='des'>Descendente</option>
+            </select>
+
             <h2>Buscador de Recetas</h2>
             <form className="form-container" onSubmit={handleSubmit}>
                 <span>
@@ -50,11 +56,14 @@ export default function Home() {
                     <input type="text" placeholder="Ingrese un nombre..." onChange={handleChange} value={title} id="title" autoComplete="off" />
                 </span>
                 <button type="submit">BUSCAR</button>
-
             </form>
+
+
+
+
             {
                 loading || recipes.length > 0 ?         // Si se esta haciendo una busqueda, o hay recetas para mostrar...
-                    loading ? <h1>Loading...</h1> : recipes.map((r,i) => {       // ...muesto 'loading...' o las recetas cargadas segun corresponda.
+                    loading ? <h1>Loading...</h1> : recipes.map((r, i) => {       // ...muesto 'loading...' o las recetas cargadas segun corresponda.
                         return (
                             <Card key={i} image={r.image} name={r.name} diets={r.diets} />
                         )
