@@ -19,8 +19,6 @@ function reducer(state = initialState, action) {
   }
 
   if (action.type === GET_RECIPES_BY_NAME) {
-    console.log('*******action:', action)
-
     return {
       ...state,
       recipes: action.payload 

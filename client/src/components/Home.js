@@ -6,9 +6,6 @@ import NavBar from './NavBar.js';  //// Importo los componentes que voy a necesi
 import Card from './Card.js';
 
 
-// BUGS:
-// Si envio desde el Bacl un 404 al Front cuando no encuentra resultados en la abusqueda, no llega un array vacio
-// para que desaparezca el loading...
 
 export default function Home() {
     const dispatch = useDispatch();  // Creo una instancia de useDispatch para usar posteriormente despachar actions al reducer.
@@ -57,13 +54,13 @@ export default function Home() {
             </form>
             {
                 loading || recipes.length > 0 ?         // Si se esta haciendo una busqueda, o hay recetas para mostrar...
-                    loading ? <h1>Loading...</h1> : recipes.map(r => {       // ...muesto 'loading...' o las recetas cargadas segun corresponda.
+                    loading ? <h1>Loading...</h1> : recipes.map((r,i) => {       // ...muesto 'loading...' o las recetas cargadas segun corresponda.
                         return (
-                            <Card image={r.image} name={r.name} diets={r.diets} />
+                            <Card key={i} image={r.image} name={r.name} diets={r.diets} />
                         )
                     })
 
-                    : <h2>NO HAY RECETAS CON ESE NOMBRE</h2>       // Si NO hay recetas para mostrar y NO se esta haciendo una busqueda, muestro el mensaje correspondiente.
+                    : <h2>NO HAY RECETAS CON ESE NOMBRE!!</h2>       // Si NO hay recetas para mostrar y NO se esta haciendo una busqueda, muestro el mensaje correspondiente.
             }
         </div>
     );

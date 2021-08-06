@@ -60,15 +60,10 @@ router.get('/', async (req, res) => {
             }
         })
         const recipesToSend = dbRecipesFormated.concat(apiRecipesWithDiets);
-        // console.log ('******** RECIPES TO SEND',recipesToSend)
-        res.json(recipesToSend)
-        // if (recipesToSend.length) return res.json(recipesToSend)
-        // res.status(404).send({ error: 'No se encontraron recetas con ese nombre' })
-        // console.log('***VA A ENVIAR EL 404')
-        // res.status(404).json(recipesToSend)
-
-
-
+                
+        if (recipesToSend.length) return res.json(recipesToSend)
+        res.status(404).json({error: 'No hay recetas con ese nombre'})
+        
     } else {   // Si NO se envió del Front un nombre de receta para la busqueda, retorno las recetas de mi DB, junto con las 100 primeras recetas que me envie la API externa.
 
 

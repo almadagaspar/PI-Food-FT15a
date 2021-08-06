@@ -26,18 +26,16 @@ export const getRecipesByName = (name) => async (dispatch) => {    // Buscar rec
 
   try {
     const resp = await axios.get('http://localhost:3001/recipes?name=' + name)
-    console.log('*******resp.data:', resp.data)
     dispatch({
       type: "GET_RECIPES_BY_NAME",
       payload: resp.data
-      // payload: []
     })
-
   } catch (error) {
-
-    console.log('SE GENERO UN ERROR EN  LA ACTION: GET_RECIPES_BY_NAME')
+    dispatch({
+      type: "GET_RECIPES_BY_NAME",
+      payload: []
+    })
   }
-
 
 }
 
