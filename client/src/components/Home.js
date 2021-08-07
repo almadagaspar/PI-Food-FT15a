@@ -14,17 +14,17 @@ export default function Home() {
     const [title, setTitle] = useState("");  // Creo un estado local para almacenar dinamicamente el contenido del input con el nombre de la receta a buscar.
 
 
+    // PAGINADO:
     const [currentPage, setCurrentPage] = useState(1);
-    const [charactersPerPage, setCharactersPerPage] = useState(9);
-    const indexOfLastCharacter = currentPage * charactersPerPage;
-    const indexOfFirstCharacter = indexOfLastCharacter - charactersPerPage;
-    const currentCharacters = recipes.slice(indexOfFirstCharacter, indexOfLastCharacter);
-
-    // *** 'allCharacters'  es 'recipes'
-
+    const [recipesPerPage, setRecipesPerPage] = useState(9);   // ¿ PUEDE SER UNA COSNTANTE EN LUGAR DE UN ESTADO LOCAL?
+    const indexOfLastRecipe = currentPage * recipesPerPage;
+    const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage;
+    const currentRecipes = recipes.slice(indexOfFirstRecipe, indexOfLastRecipe);
+ 
     const paginado = (pageNumber) => {
         setCurrentPage(pageNumber)
     }
+
 
 
     useEffect(() => {        // Hago una carga inicial de recetas solo la primera vez que se ingresa a esta página. 
@@ -71,7 +71,7 @@ export default function Home() {
             </form>
 
             <Paginado
-                charactersPerPage={charactersPerPage}
+                recipesPerPage={recipesPerPage}
                 recipes={recipes.length}
                 paginado={paginado}
             />
@@ -80,7 +80,7 @@ export default function Home() {
                  // Si se esta haciendo una busqueda o hay recetas cargadas, muesto 'loading...' o las recetas cargadas segun corresponda.
                 loading || recipes.length > 0 ? 
                     loading ? <h1>Loading...</h1> :
-                    currentCharacters.map((r, i) => {      
+                    currentRecipes.map((r, i) => {      
                         return (
                             <Card key={i} image={r.image} name={r.name} diets={r.diets} />
                         )
