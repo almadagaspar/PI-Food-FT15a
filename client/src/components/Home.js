@@ -2,13 +2,30 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getRecipes, getRecipesByName, changeLoadingState } from '../actions/index.js'   // Importo las Action.
 
-import NavBar from './NavBar.js';  //// Importo los componentes que voy a necesitar en este componente.
+import NavBar from './NavBar.js';  // Importo los componentes que voy a necesitar en este componente.
 import Card from './Card.js';
-
+import Paginado from './Paginado.js';
 
 
 export default function Home() {
     const dispatch = useDispatch();  // Creo una instancia de useDispatch para usar posteriormente despachar actions al reducer.
+    const loading = useSelector(state => state.loading)  // Accedo al estado global 'loading'.
+    const recipes = useSelector(state => state.recipes)  // Accedo al estado global 'recipes'.
+    const [title, setTitle] = useState("");  // Creo un estado local para almacenar dinamicamente el contenido del input con el nombre de la receta a buscar.
+
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const [charactersPerPage, setCharactersPerPage] = useState(9);
+    const indexOfLastCharacter = currentPage * charactersPerPage;
+    const indexOfFirstCharacter = indexOfLastCharacter - charactersPerPage;
+    const currentCharacters = recipes.slice(indexOfFirstCharacter, indexOfLastCharacter);
+
+    // *** 'allCharacters'  es 'recipes'
+
+    const paginado = (pageNumber) => {
+        setCurrentPage(pageNumber)
+    }
+
 
     useEffect(() => {        // Hago una carga inicial de recetas solo la primera vez que se ingresa a esta página. 
         const LoadRecipes = async function () {
@@ -21,11 +38,10 @@ export default function Home() {
     }, []);
 
 
-    const [title, setTitle] = useState("");  // Creo un estado local para almacenar dinamicamente el contenido del input con el nombre de la receta a buscar.
-
     function handleChange(e) {  // Se ejecutará cada vez que cambia el contenido del imput para así mantener actualizado el estado local con el nombre de la receta a buscar.
         setTitle(e.target.value);
     }
+
 
     async function handleSubmit(e) {  // Se ejecutará al presionarse sobre el boton 'Buscar' o Enter.
         e.preventDefault();
@@ -36,14 +52,10 @@ export default function Home() {
         }
     }
 
-    const loading = useSelector(state => state.loading)  // Accedo al estado global 'loading'.
-    const recipes = useSelector(state => state.recipes)  // Accedo al estado global 'recipes'.
-
 
     return (
         <div>
             <NavBar />
-
             <select>
                 <option value='asc'>Ascendente</option>
                 <option value='des'>Descendente</option>
@@ -58,12 +70,17 @@ export default function Home() {
                 <button type="submit">BUSCAR</button>
             </form>
 
-
-
+            <Paginado
+                charactersPerPage={charactersPerPage}
+                recipes={recipes.length}
+                paginado={paginado}
+            />
 
             {
-                loading || recipes.length > 0 ?         // Si se esta haciendo una busqueda, o hay recetas para mostrar...
-                    loading ? <h1>Loading...</h1> : recipes.map((r, i) => {       // ...muesto 'loading...' o las recetas cargadas segun corresponda.
+                 // Si se esta haciendo una busqueda o hay recetas cargadas, muesto 'loading...' o las recetas cargadas segun corresponda.
+                loading || recipes.length > 0 ? 
+                    loading ? <h1>Loading...</h1> :
+                    currentCharacters.map((r, i) => {      
                         return (
                             <Card key={i} image={r.image} name={r.name} diets={r.diets} />
                         )

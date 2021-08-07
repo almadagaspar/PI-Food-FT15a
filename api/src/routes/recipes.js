@@ -4,32 +4,10 @@ const axios = require('axios');
 
 require('dotenv').config();    // Importo la configuración de 'dotenv' para poder acceder a las constantes del archivo .env
 const { API_KEY } = process.env;   // Almaceno en API_KEY la key para poder acceder a la API al usar axios.
-
 const { Recipe, Diet } = require('../db.js');     // Importo los modelos que necesito mediante destructuring.
 
 // Ej:  http://localhost:3001/recipes?name=apple
 // Ej:  http://localhost:3001/recipes
-
-
-
-function formatChange(recipesToFormat) {
-    console.log('**** ENTRO AL formatChange')
-    //  Cambio la estructura de la propiedad incluida 'diets' para que sea un array de strings en lugar de un array de objetos. 
-    //  "diets": [ { "name": "Ketogenic" }, { "name": "Pescetarian" } ]       =====>     "diets": ["Ketogenic", "Pescetarian" ]
-    let dbRecipesFormated = [];
-    for (let i = 0; i < recipesToFormat.length; i++) {
-        let recipeFormated = {         // Esta variable representa cada elemento del array de recetas encontradas en la base de datos
-            id: recipesToFormat[i].id,
-            name: recipesToFormat[i].name,
-            createdInDb: recipesToFormat[i].createdInDb,      // BORRAR SI AVANZANDO EN EL PI, NO RESULTA NECESARIO.
-            diets: recipesToFormat[i].diets && recipesToFormat[i].diets.map(d => d.name)
-        }
-        dbRecipesFormated.push(recipeFormated)
-    }
-    return dbRecipesFormated;
-}
-
-
 
 
 
@@ -46,34 +24,12 @@ router.get('/', async (req, res) => {
         const dbRecipesByName = dbRecipes.filter(recipe => recipe.name.toLowerCase().includes(req.query.name.toLowerCase()))
 
 
-
-
         const dbRecipesFormated = formatChange(dbRecipesByName);
-
-
-        
-        // BORRAR ESTO DE ABAJO SI LA FUNCION formatChange SIGUE FUNCIONANDO BIEN.
-        // //  Cambio la estructura de la propiedad incluida 'diets' para que sea un array de strings en lugar de un array de objetos. 
-        // //  "diets": [ { "name": "Ketogenic" }, { "name": "Pescetarian" } ]       =====>     "diets": ["Ketogenic", "Pescetarian" ]
-        // let dbRecipesFormated = [];
-        // for (let i = 0; i < dbRecipesByName.length; i++) {
-        //     let recipeFormated = {         // Esta variable representa cada elemento del array de recetas encontradas en la base de datos
-        //         id: dbRecipesByName[i].id,
-        //         name: dbRecipesByName[i].name,
-        //         createdInDb: dbRecipesByName[i].createdInDb,
-        //         diets: dbRecipesByName[i].diets && dbRecipesByName[i].diets.map(d => d.name)
-        //     }
-        //     dbRecipesFormated.push(recipeFormated)
-        // }
-
-
-
-
 
 
         let apiRecipes = []
         try {
-            apiRecipes = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=10&query=${req.query.name}`)
+            apiRecipes = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=30&query=${req.query.name}`)
         } catch (error) {
             console.log("Se genero un error en el back al buscar por nombre", error)
         }
@@ -113,26 +69,8 @@ router.get('/', async (req, res) => {
         const dbRecipesFormated = formatChange(dbRecipes);
 
 
-        // BORRAR ESTO DE ABAJO SI LA FUNCION formatChange SIGUE FUNCIONANDO BIEN.
-        // //  Cambio la estructura de la propiedad incluida 'diets' para que sea un array de strings en lugar de un array de objetos. 
-        // //  "diets": [ { "name": "Ketogenic" }, { "name": "Pescetarian" } ]       =====>     "diets": ["Ketogenic", "Pescetarian" ]
-        // let dbRecipesFormated = [];
-        // for (let i = 0; i < dbRecipes.length; i++) {
-        //     let recipeFormated = {         // Esta variable representa cada elemento del array de recetas encontradas en la base de datos
-        //         id: dbRecipes[i].id,
-        //         name: dbRecipes[i].name,
-        //         createdInDb: dbRecipes[i].createdInDb,
-        //         diets: dbRecipes[i].diets && dbRecipes[i].diets.map(d => d.name)
-        //     }
-        //     dbRecipesFormated.push(recipeFormated)
-        // }
-
-
-
-
-
         // Para obtener mayor información sobre las recetas, como por ejemplo el tipo de dieta, agrego el flag: &addRecipeInformation=true
-        const recipesAPI = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=10`)
+        const recipesAPI = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=30`)
 
         const recipesToSend = recipesAPI.data.results.map(recipe => {
             // Las dietas a las que pertenece cada receta estan en dos lugares distintos, por lo que tengo que unirlas pero evitando que se repitan.
@@ -155,4 +93,24 @@ router.get('/', async (req, res) => {
 })
 
 
+
+//  Cambio la estructura de la propiedad incluida 'diets' para que sea un array de strings en lugar de un array de objetos. 
+//  "diets": [ { "name": "Ketogenic" }, { "name": "Pescetarian" } ]       =====>     "diets": ["Ketogenic", "Pescetarian" ]
+function formatChange(recipesToFormat) {
+    let dbRecipesFormated = [];
+    for (let i = 0; i < recipesToFormat.length; i++) {
+        let recipeFormated = {         // Esta variable representa cada elemento del array de recetas encontradas en la base de datos
+            id: recipesToFormat[i].id,
+            name: recipesToFormat[i].name,
+            createdInDb: recipesToFormat[i].createdInDb,      // BORRAR SI AVANZANDO EN EL PI, NO RESULTA NECESARIO.
+            diets: recipesToFormat[i].diets && recipesToFormat[i].diets.map(d => d.name)
+        }
+        dbRecipesFormated.push(recipeFormated)
+    }
+    return dbRecipesFormated;
+}
+
+
+
 module.exports = router;
+
