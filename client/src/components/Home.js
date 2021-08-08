@@ -1,16 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getRecipes, getRecipesByName, changeLoadingState } from '../actions/index.js'   // Importo las Action.
+import { getRecipes, getDiets, getRecipesByName, changeLoadingState } from '../actions/index.js'   // Importo las Action.
 
 import NavBar from './NavBar.js';  // Importo los componentes que voy a necesitar en este componente.
 import Card from './Card.js';
+import Diet from './Diet.js';
 import Paginado from './Paginado.js';
+
+// BUGS:
+// Al hacer una busqueda desde una pagina del paginado con nuemro superior al numero de paginas que se generarán
+// con el resultado de esta ultima ruta, no se vusualizan las recetas conseguidas, por lo que hay que hacer click en
+// la pagina 1 del paginado para que se visulicen. Posible solución: tras una busqueda, forzar a ir a la primera pagina del paginado.
+
 
 
 export default function Home() {
     const dispatch = useDispatch();  // Creo una instancia de useDispatch para usar posteriormente despachar actions al reducer.
     const loading = useSelector(state => state.loading)  // Accedo al estado global 'loading'.
     const recipes = useSelector(state => state.recipes)  // Accedo al estado global 'recipes'.
+    const diets = useSelector(state => state.diets)  // Accedo al estado global 'diets'.
     const [title, setTitle] = useState("");  // Creo un estado local para almacenar dinamicamente el contenido del input con el nombre de la receta a buscar.
 
 
@@ -20,7 +28,7 @@ export default function Home() {
     const indexOfLastRecipe = currentPage * recipesPerPage;
     const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage;
     const currentRecipes = recipes.slice(indexOfFirstRecipe, indexOfLastRecipe);
- 
+
     const paginado = (pageNumber) => {
         setCurrentPage(pageNumber)
     }
@@ -30,8 +38,9 @@ export default function Home() {
     useEffect(() => {        // Hago una carga inicial de recetas solo la primera vez que se ingresa a esta página. 
         const LoadRecipes = async function () {
             if (loading) {         // Si es la primera vez que entro al Home...
-                await dispatch(getRecipes())     // Realizo una carga inicial de videojuegos.
-                dispatch(changeLoadingState())     // El estado de 'loading' comienza en true, pero tras la carga inicial de recetas debo cambiarlo a false.
+                await dispatch(getRecipes())     // Realizo una carga inicial de videojuegos. Los 'await' son para que no se cambie el stado de 'loading' antes de tienpo.
+                await dispatch(getDiets())     // Realizo la carga de los diferentes tipos de dietas.
+                dispatch(changeLoadingState())     // 'loading' comienza en true, pero tras la carga inicial de recetas debo cambiarlo a false.
             }
         };
         LoadRecipes();
@@ -61,6 +70,19 @@ export default function Home() {
                 <option value='des'>Descendente</option>
             </select>
 
+
+            <select>
+                <option value='Todas'>Todas</option>
+                {
+                    diets && diets.map((diet, i) => {
+                        return (
+                            <Diet diet={diet.name} key={i} />
+                        )
+                    })
+                }
+            </select>
+
+
             <h2>Buscador de Recetas</h2>
             <form className="form-container" onSubmit={handleSubmit}>
                 <span>
@@ -77,14 +99,14 @@ export default function Home() {
             />
 
             {
-                 // Si se esta haciendo una busqueda o hay recetas cargadas, muesto 'loading...' o las recetas cargadas segun corresponda.
-                loading || recipes.length > 0 ? 
+                // Si se esta haciendo una busqueda o hay recetas cargadas, muesto 'loading...' o las recetas cargadas segun corresponda.
+                loading || recipes.length > 0 ?
                     loading ? <h1>Loading...</h1> :
-                    currentRecipes.map((r, i) => {      
-                        return (
-                            <Card key={i} image={r.image} name={r.name} diets={r.diets} />
-                        )
-                    })
+                        currentRecipes.map((r, i) => {
+                            return (
+                                <Card key={i} image={r.image} name={r.name} diets={r.diets} />
+                            )
+                        })
 
                     : <h2>NO HAY RECETAS CON ESE NOMBRE!!</h2>       // Si NO hay recetas para mostrar y NO se esta haciendo una busqueda, muestro el mensaje correspondiente.
             }
