@@ -6,7 +6,7 @@ export const GET_RECIPES_BY_NAME = "GET_RECIPES_BY_NAME";
 export const GET_RECIPE_DETAIL = 'GET_RECIPE_DETAIL';
 export const ADD_RECIPE = 'ADD_RECIPE';
 export const CHANGE_LOADING_STATE = 'CHANGE_LOADING_STATE';
-export const FILTER_BY_DIET = 'FILTER_BY_DIET';
+export const FILTER_RECIPES_BY_DIET = 'FILTER_RECIPES_BY_DIET';
 
 
 //// ACTIONS CREATORS
@@ -82,7 +82,7 @@ export function changeLoadingState() {   // Invertir el valor del estado 'loadin
 
 export function filterRecipesByDiet(payload) {
   return {
-    type: "FILTER_BY_DIET",
+    type: "FILTER_RECIPES_BY_DIET",
     payload
   }
 }
