@@ -8,7 +8,6 @@ const initialState = {
   recipes: [],   // Todas las recetas cargadas para mostrar. Será modificado al aplicar filtros.
   recipesBkp: [],   // Es una copia del estado 'recipes', y lo uso para hacer los filtrados a travez de el pero sin modificarlo. 
   diets: [],    // Lista de las diferentes dietas a las que puede pertenecer una receta.
-  // originalOrder: []
 };
 
 // REDUCER
@@ -19,9 +18,9 @@ function reducer(state = initialState, action) {   // REEMPLAZAR LOS IF POR UN S
       ...state,
       recipes: action.payload,
       recipesBkp: action.payload,
-      // originalOrder: action.payload,
     }
   }
+
 
   if (action.type === GET_DIETS) {
     return {
@@ -29,6 +28,7 @@ function reducer(state = initialState, action) {   // REEMPLAZAR LOS IF POR UN S
       diets: action.payload
     }
   }
+
 
   if (action.type === GET_RECIPES_BY_NAME) {
     return {
@@ -38,6 +38,7 @@ function reducer(state = initialState, action) {   // REEMPLAZAR LOS IF POR UN S
     }
   }
 
+
   if (action.type === CHANGE_LOADING_STATE) {
     return {
       ...state,
@@ -45,13 +46,14 @@ function reducer(state = initialState, action) {   // REEMPLAZAR LOS IF POR UN S
     }
   }
 
+
   if (action.type === FILTER_RECIPES_BY_DIET) {
-    // Determino segun el filtro elegido las recetas que se deben renderizar.
-    const recipesFiltered = action.payload === 'All' ? state.recipesBkp
+    const recipesFiltered = action.payload === 'All' ? state.recipesBkp  // Determino segun el filtro elegido las recetas que se deben renderizar.
       : state.recipesBkp.filter(r => r.diets.includes(action.payload))
     return {
       ...state,
-      recipes: recipesFiltered
+      recipes: recipesFiltered,
+      selectedFilter:action.payload
     }
   }
 
@@ -62,7 +64,6 @@ function reducer(state = initialState, action) {   // REEMPLAZAR LOS IF POR UN S
     return {
       ...state,
       order: action.payload,
-      // recipes: sortedRecipes,
     }
   }
 
@@ -72,11 +73,9 @@ function reducer(state = initialState, action) {   // REEMPLAZAR LOS IF POR UN S
     return {
       ...state,
       recipes: action.payload,
-      // recipesBkp: state.recipesBkp
     }
   }
   
-
 
   return state;
 }

@@ -8,13 +8,10 @@ import Diet from './Diet.js';
 import Paginado from './Paginado.js';
 
 // BUGS:
-// Al hacer una busqueda desde una pagina del paginado con nuemro superior al numero de paginas que se generarán
-// con el resultado de esta ultima ruta, no se vusualizan las recetas conseguidas, por lo que hay que hacer click en
-// la pagina 1 del paginado para que se visulicen. Posible solución: tras una busqueda, forzar a ir a la primera pagina del paginado.
+// Al hacer una nueva busqueda por nombre se debería resetear el filtrado por dietas en All, ya que queda el selector de dietas
+// en la ultima dieta elegida, pero los resultados obtenidos de por la ultima busqueda por nombre no esta filtrada.
 
-// Al usar un filtro que no devuelve ninguna receta, muestra THERE ARE NO RECIPES WITH THAT NAME !
-
-// Al hacer una nueva busqueda por nombre se debería resetear el filtrado por dietas en All.
+// Si tras filtrar po una dieta, se sale de Home y se vuelve a entrar el selector de dietas vuelve a All pero las recetas siguen filtradas.
 
 export default function Home() {
     const dispatch = useDispatch();  // Creo una instancia de useDispatch para usar posteriormente despachar actions al reducer.
@@ -25,10 +22,8 @@ export default function Home() {
     const [title, setTitle] = useState("");  // Creo un estado local para almacenar dinamicamente el contenido del input con el nombre de la receta a buscar.
 
 
-
     // ORDENAMIENTO
     const order = useSelector(state => state.order)   // importo este estado solo para que se rendericen los cambios de ordenamiento.
-    // const originalOrder = useSelector(state => state.originalOrder)
 
     // PAGINADO:
     const [currentPage, setCurrentPage] = useState(1);
@@ -55,12 +50,14 @@ export default function Home() {
     }, []);
 
 
+
     function handleChange(e) {  // Se ejecutará cada vez que cambia el contenido del imput para así mantener actualizado el estado local con el nombre de la receta a buscar.
         setTitle(e.target.value);
     }
 
 
-    async function handleSubmit(e) {  // Se ejecutará al presionarse sobre el boton 'Buscar' o Enter.
+
+    async function handleSubmit(e) {  // Se ejecutará al presionarse sobre el boton 'Buscar' (o Enter) del input de Buscar por nombre.
         e.preventDefault();
         if (!loading) {     // Desactivo el boton buscar mientras se esta haciendo una busqueda.
             dispatch(changeLoadingState());          // Esta por comenzar una busqueda, por lo que cambio es estado de 'loading' a true.
@@ -69,55 +66,48 @@ export default function Home() {
         }
     }
 
+
     function handleFilterRecipesByDiet(e) {
         dispatch(filterRecipesByDiet(e.target.value));
+        setCurrentPage(1);
     }
 
+
     function handleSort(e) {
-        // e.preventDefault();
         dispatch(orderByName(e.target.value))
         setCurrentPage(1);
         let sortedRecipes = recipesBkp
 
         if (e.target.value === 'asc') {
             sortedRecipes = recipes.sort(function (a, b) {
-
-                if (a.name > b.name) {
-                    return 1;
-                }
-                if (b.name > a.name) {
-                    return -1;
-                }
+                if (a.name > b.name) return 1;
+                if (b.name > a.name) return -1;
                 return 0;
             })
-        } else if (e.target.value === 'des') {
-
+        } else {
             sortedRecipes = recipes.sort(function (a, b) {
-                if (a.name > b.name) {
-                    return -1;
-                }
-                if (b.name > a.name) {
-                    return 1;
-                }
+                if (a.name > b.name) return -1;
+                if (b.name > a.name) return 1;
                 return 0;
             })
         }
-        //   else if (e.target.value === 'none') {
-        //     sortedRecipes = originalOrder
-        //   }
         dispatch(changeOrder(sortedRecipes))
     }
+
 
 
     return (
         <div>
             <NavBar />
-            <select onChange={e => handleSort(e)}>
-                <option value="" disabled selected>Select an order...</option>
-                {/* <option value='none'>Select an order...</option> */}
+
+            <select onChange={e => handleSort(e)} defaultValue={"DEFAULT"} >  {/* Ordenamiento por nombre */}
+                <option value="DEFAULT" disabled>Select an order...</option>
                 <option value='asc'>Ascending</option>      {/*    A --> Z   */}
-                <option value='des'>Descending</option>     {/*    Z --> A    */}
-            </select>
+                <option value='des'>Descending</option>     {/*    Z --> A   */}
+            </select >
+
+
+            
 
 
             <select onChange={e => handleFilterRecipesByDiet(e)}>
@@ -159,7 +149,7 @@ export default function Home() {
                         : <h2>THERE ARE NO RECIPES WITH THAT NAME !</h2>
 
             }
-        </div>
+        </div >
     );
 };
 
