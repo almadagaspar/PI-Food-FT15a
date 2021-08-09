@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getRecipes, getDiets, getRecipesByName, changeLoadingState, filterRecipesByDiet } from '../actions/index.js'   // Importo las Action.
+import { getRecipes, getDiets, getRecipesByName, changeLoadingState, filterRecipesByDiet, orderByName, changeOrder } from '../actions/index.js'   // Importo las Action.
 
 import NavBar from './NavBar.js';  // Importo los componentes que voy a necesitar en este componente.
 import Card from './Card.js';
@@ -24,6 +24,11 @@ export default function Home() {
     const diets = useSelector(state => state.diets)  // Accedo al estado global 'diets'.
     const [title, setTitle] = useState("");  // Creo un estado local para almacenar dinamicamente el contenido del input con el nombre de la receta a buscar.
 
+
+
+    // ORDENAMIENTO
+    const order = useSelector(state => state.order)   // importo este estado solo para que se rendericen los cambios de ordenamiento.
+    // const originalOrder = useSelector(state => state.originalOrder)
 
     // PAGINADO:
     const [currentPage, setCurrentPage] = useState(1);
@@ -68,14 +73,50 @@ export default function Home() {
         dispatch(filterRecipesByDiet(e.target.value));
     }
 
+    function handleSort(e) {
+        // e.preventDefault();
+        dispatch(orderByName(e.target.value))
+        setCurrentPage(1);
+        let sortedRecipes = recipesBkp
+
+        if (e.target.value === 'asc') {
+            sortedRecipes = recipes.sort(function (a, b) {
+
+                if (a.name > b.name) {
+                    return 1;
+                }
+                if (b.name > a.name) {
+                    return -1;
+                }
+                return 0;
+            })
+        } else if (e.target.value === 'des') {
+
+            sortedRecipes = recipes.sort(function (a, b) {
+                if (a.name > b.name) {
+                    return -1;
+                }
+                if (b.name > a.name) {
+                    return 1;
+                }
+                return 0;
+            })
+        }
+        //   else if (e.target.value === 'none') {
+        //     sortedRecipes = originalOrder
+        //   }
+        dispatch(changeOrder(sortedRecipes))
+    }
 
 
     return (
         <div>
             <NavBar />
-            <select>
-                <option value='asc'>Ascending</option>
-                <option value='des'>Descending</option>
+            <select onChange={e => handleSort(e)}>
+                <option value="" disabled selected>Select an order...</option>
+                {/* <option value='none'>Select an order...</option> */}
+                <option value='asc'>Ascending</option>      {/*    A --> Z   */}
+                <option value='des'>Descending</option>     {/*    Z --> A    */}
             </select>
 
 
@@ -114,8 +155,8 @@ export default function Home() {
                         })
                     // Si NO hay recetas para mostrar y NO se esta haciendo una busqueda, muestro el mensaje correspondiente
                     // segun si la razón por la cual no hay recetas es por una busqueda por nombre sin resultados, o por elegir un filtro sin resultados.  .
-                    : recipesBkp.length && !recipes.length ? <h2>THERE ARE NO RECIPES TO SHOW WITH THAT FILTER !</h2> 
-                                                           : <h2>THERE ARE NO RECIPES WITH THAT NAME !</h2> 
+                    : recipesBkp.length && !recipes.length ? <h2>THERE ARE NO RECIPES TO SHOW WITH THAT FILTER !</h2>
+                        : <h2>THERE ARE NO RECIPES WITH THAT NAME !</h2>
 
             }
         </div>
