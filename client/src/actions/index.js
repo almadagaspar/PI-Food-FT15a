@@ -7,8 +7,12 @@ export const GET_RECIPES_BY_NAME = "GET_RECIPES_BY_NAME";
 // export const ADD_RECIPE = 'ADD_RECIPE';
 export const CHANGE_LOADING_STATE = 'CHANGE_LOADING_STATE';
 export const FILTER_RECIPES_BY_DIET = 'FILTER_RECIPES_BY_DIET';
+
 export const ORDER_BY_NAME = "ORDER_BY_NAME"
 export const CHANGE_ORDER_BY_NAME = "CHANGE_ORDER_BY_NAME"
+
+export const ORDER_BY_SCORE = "ORDER_BY_SCORE"
+export const CHANGE_ORDER_BY_SCORE = "CHANGE_ORDER_BY_SCORE"
 
 //// ACTIONS CREATORS
 
@@ -72,6 +76,8 @@ export function filterRecipesByDiet(payload) {
 }
 
 
+
+
 export function orderByName(payload) {
   return {
     type: "ORDER_BY_NAME",
@@ -82,6 +88,23 @@ export function orderByName(payload) {
 export function changeOrderByName(payload) {
   return {
     type: "CHANGE_ORDER_BY_NAME",
+    payload
+  }
+}
+
+
+
+
+export function orderByScore(payload) {
+  return {
+    type: "ORDER_BY_SCORE",
+    payload
+  }
+}
+
+export function changeOrderByScore(payload) {
+  return {
+    type: "CHANGE_ORDER_BY_SCORE",
     payload
   }
 }

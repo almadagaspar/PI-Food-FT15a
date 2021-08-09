@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getRecipes, getDiets, getRecipesByName, changeLoadingState, filterRecipesByDiet, orderByName, changeOrderByName } from '../actions/index.js'   // Importo las Action.
+import { getRecipes, getDiets, getRecipesByName, changeLoadingState, filterRecipesByDiet, orderByName, changeOrderByName, orderByScore, changeOrderByScore } from '../actions/index.js'   // Importo las Action.
 
 import NavBar from './NavBar.js';  // Importo los componentes que voy a necesitar en este componente.
 import Card from './Card.js';
@@ -26,11 +26,12 @@ export default function Home() {
     const recipesBkp = useSelector(state => state.recipesBkp)  // Accedo al estado global 'recipesBkp'.
     const diets = useSelector(state => state.diets)  // Accedo al estado global 'diets'.
     const [recipeName, setRecipeName] = useState("");  // Creo un estado local para almacenar dinamicamente el contenido del input con el nombre de la receta a buscar.
-    
+
 
     // ORDENAMIENTO
-    const order = useSelector(state => state.order)   // importo este estado solo para que se rendericen los cambios de ordenamiento.
-    
+    const nameOrder = useSelector(state => state.nameOrder)   // importo este estado solo para que se rendericen los cambios de ordenamiento.
+    const scoreOrder = useSelector(state => state.scoreOrder)   // importo este estado solo para que se rendericen los cambios de ordenamiento.
+
 
     // PAGINADO:
     const [currentPage, setCurrentPage] = useState(1);
@@ -75,6 +76,21 @@ export default function Home() {
 
 
     function handleOrderByScore(e) {
+        dispatch(orderByScore(e.target.value))
+        setCurrentPage(1);
+        let sortedRecipes = recipesBkp
+
+        if (e.target.value === 'asc') {
+            sortedRecipes.sort(function (a, b) {
+                return a.score - b.score;
+            });
+        } else {
+            sortedRecipes.sort(function (a, b) {
+                return b.score - a.score;
+            });
+        }
+        dispatch(changeOrderByScore(sortedRecipes))
+
     }
 
 
@@ -100,7 +116,7 @@ export default function Home() {
         dispatch(changeOrderByName(sortedRecipes))
     }
 
-   
+
 
 
     function handleFilterRecipesByDiet(e) {
@@ -109,22 +125,22 @@ export default function Home() {
     }
 
 
-    
+
     return (
         <div>
             <NavBar />
 
             <select onChange={e => handleOrderByName(e)} defaultValue={"DEFAULT"} >  {/* Ordenamiento por nombre */}
                 <option value="DEFAULT" disabled>Select an order by name</option>
-                <option value='asc'>Ascending  A ➜ Z</option>      
-                <option value='des'>Descending  Z ➜ A</option>     
+                <option value='asc'>Ascending  A ➜ Z</option>
+                <option value='des'>Descending  Z ➜ A</option>
             </select >
 
 
             <select onChange={e => handleOrderByScore(e)} defaultValue={"DEFAULT"} >  {/* Ordenamiento por nombre */}
                 <option value="DEFAULT" disabled>Select an order by score</option>
-                <option value='asc'>Ascending 1 ➜ 9</option>  
-                <option value='des'>Descending 9 ➜ 1</option> 
+                <option value='asc'>Ascending 1 ➜ 9</option>
+                <option value='des'>Descending 9 ➜ 1</option>
             </select >
 
 
