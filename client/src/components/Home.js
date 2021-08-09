@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getRecipes, getDiets, getRecipesByName, changeLoadingState, filterRecipesByDiet, orderByName, changeOrder } from '../actions/index.js'   // Importo las Action.
+import { getRecipes, getDiets, getRecipesByName, changeLoadingState, filterRecipesByDiet, orderByName, changeOrderByName } from '../actions/index.js'   // Importo las Action.
 
 import NavBar from './NavBar.js';  // Importo los componentes que voy a necesitar en este componente.
 import Card from './Card.js';
@@ -13,17 +13,24 @@ import Paginado from './Paginado.js';
 
 // Si tras filtrar po una dieta, se sale de Home y se vuelve a entrar el selector de dietas vuelve a All pero las recetas siguen filtradas.
 
+// Si tras ordenar por nombre, se sale de Home y se vuelve a entrar el selector ordenar por nombre vuelve a su valor por defecto pero las recetas matiene el ultimo orden elegido.
+
+// Si se aplica un filtro por dieta y despues un ordenamiento alfabeticamente, al quitar el filtro y aparecer las recetas que estaban ocultas, estas no estan ordenadas alfabeticamente.
+
+// Ver si se puede remplazar el estado global 'order' por uno local.
+
 export default function Home() {
     const dispatch = useDispatch();  // Creo una instancia de useDispatch para usar posteriormente despachar actions al reducer.
     const loading = useSelector(state => state.loading)  // Accedo al estado global 'loading'.
     const recipes = useSelector(state => state.recipes)  // Accedo al estado global 'recipes'.
     const recipesBkp = useSelector(state => state.recipesBkp)  // Accedo al estado global 'recipesBkp'.
     const diets = useSelector(state => state.diets)  // Accedo al estado global 'diets'.
-    const [title, setTitle] = useState("");  // Creo un estado local para almacenar dinamicamente el contenido del input con el nombre de la receta a buscar.
-
+    const [recipeName, setRecipeName] = useState("");  // Creo un estado local para almacenar dinamicamente el contenido del input con el nombre de la receta a buscar.
+    
 
     // ORDENAMIENTO
     const order = useSelector(state => state.order)   // importo este estado solo para que se rendericen los cambios de ordenamiento.
+    
 
     // PAGINADO:
     const [currentPage, setCurrentPage] = useState(1);
@@ -52,7 +59,7 @@ export default function Home() {
 
 
     function handleChange(e) {  // Se ejecutará cada vez que cambia el contenido del imput para así mantener actualizado el estado local con el nombre de la receta a buscar.
-        setTitle(e.target.value);
+        setRecipeName(e.target.value);
     }
 
 
@@ -61,19 +68,18 @@ export default function Home() {
         e.preventDefault();
         if (!loading) {     // Desactivo el boton buscar mientras se esta haciendo una busqueda.
             dispatch(changeLoadingState());          // Esta por comenzar una busqueda, por lo que cambio es estado de 'loading' a true.
-            await dispatch(getRecipesByName(title));   // Envio al reducer la action de busqueda por nombre. Evito con en 'await' que se lea la linea siguiente antes de tiempo.
+            await dispatch(getRecipesByName(recipeName));   // Envio al reducer la action de busqueda por nombre. Evito con en 'await' que se lea la linea siguiente antes de tiempo.
             dispatch(changeLoadingState());         // Acaba de terminar una busqueda, por lo que cambio es estado de 'loading' a false.
         }
     }
 
 
-    function handleFilterRecipesByDiet(e) {
-        dispatch(filterRecipesByDiet(e.target.value));
-        setCurrentPage(1);
+    function handleOrderByScore(e) {
     }
 
 
-    function handleSort(e) {
+
+    function handleOrderByName(e) {
         dispatch(orderByName(e.target.value))
         setCurrentPage(1);
         let sortedRecipes = recipesBkp
@@ -91,23 +97,35 @@ export default function Home() {
                 return 0;
             })
         }
-        dispatch(changeOrder(sortedRecipes))
+        dispatch(changeOrderByName(sortedRecipes))
+    }
+
+   
+
+
+    function handleFilterRecipesByDiet(e) {
+        dispatch(filterRecipesByDiet(e.target.value));
+        setCurrentPage(1);
     }
 
 
-
+    
     return (
         <div>
             <NavBar />
 
-            <select onChange={e => handleSort(e)} defaultValue={"DEFAULT"} >  {/* Ordenamiento por nombre */}
-                <option value="DEFAULT" disabled>Select an order...</option>
-                <option value='asc'>Ascending</option>      {/*    A --> Z   */}
-                <option value='des'>Descending</option>     {/*    Z --> A   */}
+            <select onChange={e => handleOrderByName(e)} defaultValue={"DEFAULT"} >  {/* Ordenamiento por nombre */}
+                <option value="DEFAULT" disabled>Select an order by name</option>
+                <option value='asc'>Ascending  A ➜ Z</option>      
+                <option value='des'>Descending  Z ➜ A</option>     
             </select >
 
 
-            
+            <select onChange={e => handleOrderByScore(e)} defaultValue={"DEFAULT"} >  {/* Ordenamiento por nombre */}
+                <option value="DEFAULT" disabled>Select an order by score</option>
+                <option value='asc'>Ascending 1 ➜ 9</option>  
+                <option value='des'>Descending 9 ➜ 1</option> 
+            </select >
 
 
             <select onChange={e => handleFilterRecipesByDiet(e)}>
@@ -123,10 +141,9 @@ export default function Home() {
 
 
             <h2>Search by Recipe</h2>
-            <form className="form-container" onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit}>
                 <span>
-                    <label className="label" htmlFor="title">Recipe: </label>
-                    <input type="text" placeholder="Write the name here!" onChange={handleChange} value={title} id="title" autoComplete="off" />
+                    <input type="text" placeholder="Write the name here!" onChange={handleChange} value={recipeName} autoComplete="off" />
                 </span>
                 <button type="submit">SEARCH</button>
             </form>
@@ -140,7 +157,7 @@ export default function Home() {
                     loading ? <h1>Loading...</h1> :
                         currentRecipes.map((r, i) => {
                             return (
-                                <Card key={i} image={r.image} name={r.name} diets={r.diets} />
+                                <Card key={i} image={r.image} name={r.name} score={r.score} diets={r.diets} />
                             )
                         })
                     // Si NO hay recetas para mostrar y NO se esta haciendo una busqueda, muestro el mensaje correspondiente

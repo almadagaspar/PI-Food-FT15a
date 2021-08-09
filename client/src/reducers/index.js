@@ -1,5 +1,5 @@
 
-import { GET_RECIPES, GET_RECIPES_BY_NAME, CHANGE_LOADING_STATE, GET_DIETS, FILTER_RECIPES_BY_DIET, ORDER_BY_NAME, CHANGE_ORDER } from "../actions";
+import { GET_RECIPES, GET_RECIPES_BY_NAME, CHANGE_LOADING_STATE, GET_DIETS, FILTER_RECIPES_BY_DIET, ORDER_BY_NAME, CHANGE_ORDER_BY_NAME } from "../actions";
 
 
 const initialState = {
@@ -60,16 +60,14 @@ function reducer(state = initialState, action) {   // REEMPLAZAR LOS IF POR UN S
 
 
 
-  if (action.type === ORDER_BY_NAME) {
+  if (action.type === ORDER_BY_NAME) {  // Cambio es esatdo 'order'
     return {
       ...state,
       order: action.payload,
     }
   }
 
-
-  
-  if (action.type === CHANGE_ORDER) {
+  if (action.type === CHANGE_ORDER_BY_NAME) {
     return {
       ...state,
       recipes: action.payload,
