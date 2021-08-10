@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom'
-import "./Landing.css"    // Importo los estilos para este componente.
+import "./Landing.css"    
 
 
-function Landing() {   // Primer componente que se renderizará.
+function Landing() {   
     return (
         <div className="Landing">
             <h1>Food</h1>
             <Link to='/home'>
-                <button> ENTRAR </button>   {/* Boton que me enviará al componente 'Home', mediante el cambio en la ruta que hace el 'Link' */}
+                <button> ENTRAR </button>  
             </Link>
         </div>
     );

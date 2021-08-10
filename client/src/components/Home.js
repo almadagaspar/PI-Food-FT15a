@@ -1,27 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-    getRecipes, getDiets, getRecipesByName, changeLoadingState, filterRecipesByDiet,
-    orderByName, changeOrderByName, orderByScore, changeOrderByScore,
-    updateOrder, changeOrder
-} from '../actions/index.js'   // Importo las Action.
 
-import NavBar from './NavBar.js';  // Importo los componentes que voy a necesitar en este componente.
+// Importo las Action.
+import { getRecipes, getDiets, getRecipesByName, changeLoadingState, filterRecipesByDiet, updateOrder, changeOrder } from '../actions/index.js'
+
+// Importo los componentes que voy a necesitar en este componente.
+import NavBar from './NavBar.js';
 import Card from './Card.js';
 import Diet from './Diet.js';
 import Paginado from './Paginado.js';
 
-// BUGS:
-// Al hacer una nueva busqueda por nombre se debería resetear el filtrado por dietas en All, ya que queda el selector de dietas
-// en la ultima dieta elegida, pero los resultados obtenidos de por la ultima busqueda por nombre no esta filtrada.
 
-// Si tras filtrar po una dieta, se sale de Home y se vuelve a entrar el selector de dietas vuelve a All pero las recetas siguen filtradas.
-
-// Si tras ordenar por nombre, se sale de Home y se vuelve a entrar el selector ordenar por nombre vuelve a su valor por defecto pero las recetas matiene el ultimo orden elegido.
-
-// Si se aplica un filtro por dieta y despues un ordenamiento alfabeticamente, al quitar el filtro y aparecer las recetas que estaban ocultas, estas no estan ordenadas alfabeticamente.
-
-// Ver si se puede remplazar el estado global 'order' por uno local.
 
 export default function Home() {
     const dispatch = useDispatch();  // Creo una instancia de useDispatch para usar posteriormente despachar actions al reducer.
@@ -31,12 +20,8 @@ export default function Home() {
     const diets = useSelector(state => state.diets)  // Accedo al estado global 'diets'.
     const [recipeName, setRecipeName] = useState("");  // Creo un estado local para almacenar dinamicamente el contenido del input con el nombre de la receta a buscar.
 
-
     // ORDENAMIENTO
-    // const nameOrder = useSelector(state => state.nameOrder)   // importo este estado solo para que se rendericen los cambios de ordenamiento.
-    // const scoreOrder = useSelector(state => state.scoreOrder)   // importo este estado solo para que se rendericen los cambios de ordenamiento.
     const order = useSelector(state => state.order)   // importo este estado solo para que se rendericen los cambios de ordenamiento.
-
 
     // PAGINADO:
     const [currentPage, setCurrentPage] = useState(1);
@@ -48,8 +33,12 @@ export default function Home() {
     const paginado = (pageNumber) => {
         setCurrentPage(pageNumber)
     }
-
-
+            //        ////
+            //   ..  (°u°)  .. 
+            //     \___|___/
+            //         \
+            //         /\
+            //       _/  \_      
 
     useEffect(() => {        // Hago una carga inicial de recetas solo la primera vez que se ingresa a esta página. 
         const LoadRecipes = async function () {
@@ -60,7 +49,7 @@ export default function Home() {
             }
         };
         LoadRecipes();
-    }, []);
+    }, [dispatch]);  // No agrego 'loading' aunque el warning me lo indica, porque de esa forma las busquedas arrojan recetas equivocadas.
 
 
 
@@ -75,6 +64,7 @@ export default function Home() {
         if (!loading) {     // Desactivo el boton buscar mientras se esta haciendo una busqueda.
             dispatch(changeLoadingState());          // Esta por comenzar una busqueda, por lo que cambio es estado de 'loading' a true.
             await dispatch(getRecipesByName(recipeName));   // Envio al reducer la action de busqueda por nombre. Evito con en 'await' que se lea la linea siguiente antes de tiempo.
+            setCurrentPage(1);
             dispatch(changeLoadingState());         // Acaba de terminar una busqueda, por lo que cambio es estado de 'loading' a false.
         }
     }
@@ -85,48 +75,6 @@ export default function Home() {
         setCurrentPage(1);
     }
 
-
-
-    // function handleOrderByScore(e) {
-    //     dispatch(orderByScore(e.target.value))
-    //     setCurrentPage(1);
-    //     let sortedRecipes = recipesBkp
-
-    //     if (e.target.value === 'asc') {
-    //         sortedRecipes.sort(function (a, b) {
-    //             return a.score - b.score;
-    //         });
-    //     } else {
-    //         sortedRecipes.sort(function (a, b) {
-    //             return b.score - a.score;
-    //         });
-    //     }
-    //     dispatch(changeOrderByScore(sortedRecipes))
-
-    // }
-
-
-
-    // function handleOrderByName(e) {
-    //     dispatch(orderByName(e.target.value))
-    //     setCurrentPage(1);
-    //     let sortedRecipes = recipesBkp
-
-    //     if (e.target.value === 'asc') {
-    //         sortedRecipes = recipes.sort(function (a, b) {
-    //             if (a.name > b.name) return 1;
-    //             if (b.name > a.name) return -1;
-    //             return 0;
-    //         })
-    //     } else {
-    //         sortedRecipes = recipes.sort(function (a, b) {
-    //             if (a.name > b.name) return -1;
-    //             if (b.name > a.name) return 1;
-    //             return 0;
-    //         })
-    //     }
-    //     dispatch(changeOrderByName(sortedRecipes))
-    // }
 
 
     function handleOrder(e) {
@@ -159,19 +107,15 @@ export default function Home() {
     }
 
 
-
-
-
+// ***** En el input de busqueda tiene un value={recipeName}, probar usar algo pareceido para llevar el filtro a All despues de una nueva busqueda.
 
 
     return (
         <div>
             <NavBar />
 
-
-            <select onChange={e => handleOrder(e)} defaultValue={"DEFAULT"} >  {/* Ordenamiento por nombre */}
+            <select onChange={e => handleOrder(e)} defaultValue={"DEFAULT"} >  {/* Ordenamiento alfabetico y por puntuación. */}
                 <option value="DEFAULT" disabled>Select an order</option>
-
                 <optgroup label="Alphabetical Order">
                     <option value='nameAsc'>Ascending A ➜ Z</option>
                     <option value='nameDes'>Descending Z ➜ A</option>
@@ -181,23 +125,7 @@ export default function Home() {
                     <option value='scoreAsc'>Ascending 1 ➜ 9</option>
                     <option value='scoreDes'>Descending 9 ➜ 1</option>
                 </optgroup>
-
-
-
             </select >
-
-            {/* <select onChange={e => handleOrderByName(e)} defaultValue={"DEFAULT"} >  
-                <option value="DEFAULT" disabled>Select an order by name</option>
-                <option value='asc'>Ascending  A ➜ Z</option>
-                <option value='des'>Descending  Z ➜ A</option>
-            </select >
-
-
-            <select onChange={e => handleOrderByScore(e)} defaultValue={"DEFAULT"} >  
-                <option value="DEFAULT" disabled>Select an order by score</option>
-                <option value='asc'>Ascending 1 ➜ 9</option>
-                <option value='des'>Descending 9 ➜ 1</option>
-            </select > */}
 
 
             <select onChange={e => handleFilterRecipesByDiet(e)}>
@@ -225,7 +153,6 @@ export default function Home() {
             {
                 // Si se esta haciendo una busqueda o hay recetas cargadas, muesto 'loading...' o las recetas cargadas segun corresponda.
                 loading || recipes.length ?
-
                     loading ? <h1>Loading...</h1> :
                         currentRecipes.map((r, i) => {
                             return (
