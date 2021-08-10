@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getRecipes, getDiets, getRecipesByName, changeLoadingState, filterRecipesByDiet, orderByName, changeOrderByName, orderByScore, changeOrderByScore } from '../actions/index.js'   // Importo las Action.
+import {
+    getRecipes, getDiets, getRecipesByName, changeLoadingState, filterRecipesByDiet,
+    orderByName, changeOrderByName, orderByScore, changeOrderByScore,
+    updateOrder, changeOrder
+} from '../actions/index.js'   // Importo las Action.
 
 import NavBar from './NavBar.js';  // Importo los componentes que voy a necesitar en este componente.
 import Card from './Card.js';
@@ -29,8 +33,9 @@ export default function Home() {
 
 
     // ORDENAMIENTO
-    const nameOrder = useSelector(state => state.nameOrder)   // importo este estado solo para que se rendericen los cambios de ordenamiento.
-    const scoreOrder = useSelector(state => state.scoreOrder)   // importo este estado solo para que se rendericen los cambios de ordenamiento.
+    // const nameOrder = useSelector(state => state.nameOrder)   // importo este estado solo para que se rendericen los cambios de ordenamiento.
+    // const scoreOrder = useSelector(state => state.scoreOrder)   // importo este estado solo para que se rendericen los cambios de ordenamiento.
+    const order = useSelector(state => state.order)   // importo este estado solo para que se rendericen los cambios de ordenamiento.
 
 
     // PAGINADO:
@@ -75,50 +80,6 @@ export default function Home() {
     }
 
 
-    function handleOrderByScore(e) {
-        dispatch(orderByScore(e.target.value))
-        setCurrentPage(1);
-        let sortedRecipes = recipesBkp
-
-        if (e.target.value === 'asc') {
-            sortedRecipes.sort(function (a, b) {
-                return a.score - b.score;
-            });
-        } else {
-            sortedRecipes.sort(function (a, b) {
-                return b.score - a.score;
-            });
-        }
-        dispatch(changeOrderByScore(sortedRecipes))
-
-    }
-
-
-
-    function handleOrderByName(e) {
-        dispatch(orderByName(e.target.value))
-        setCurrentPage(1);
-        let sortedRecipes = recipesBkp
-
-        if (e.target.value === 'asc') {
-            sortedRecipes = recipes.sort(function (a, b) {
-                if (a.name > b.name) return 1;
-                if (b.name > a.name) return -1;
-                return 0;
-            })
-        } else {
-            sortedRecipes = recipes.sort(function (a, b) {
-                if (a.name > b.name) return -1;
-                if (b.name > a.name) return 1;
-                return 0;
-            })
-        }
-        dispatch(changeOrderByName(sortedRecipes))
-    }
-
-
-
-
     function handleFilterRecipesByDiet(e) {
         dispatch(filterRecipesByDiet(e.target.value));
         setCurrentPage(1);
@@ -126,22 +87,117 @@ export default function Home() {
 
 
 
+    // function handleOrderByScore(e) {
+    //     dispatch(orderByScore(e.target.value))
+    //     setCurrentPage(1);
+    //     let sortedRecipes = recipesBkp
+
+    //     if (e.target.value === 'asc') {
+    //         sortedRecipes.sort(function (a, b) {
+    //             return a.score - b.score;
+    //         });
+    //     } else {
+    //         sortedRecipes.sort(function (a, b) {
+    //             return b.score - a.score;
+    //         });
+    //     }
+    //     dispatch(changeOrderByScore(sortedRecipes))
+
+    // }
+
+
+
+    // function handleOrderByName(e) {
+    //     dispatch(orderByName(e.target.value))
+    //     setCurrentPage(1);
+    //     let sortedRecipes = recipesBkp
+
+    //     if (e.target.value === 'asc') {
+    //         sortedRecipes = recipes.sort(function (a, b) {
+    //             if (a.name > b.name) return 1;
+    //             if (b.name > a.name) return -1;
+    //             return 0;
+    //         })
+    //     } else {
+    //         sortedRecipes = recipes.sort(function (a, b) {
+    //             if (a.name > b.name) return -1;
+    //             if (b.name > a.name) return 1;
+    //             return 0;
+    //         })
+    //     }
+    //     dispatch(changeOrderByName(sortedRecipes))
+    // }
+
+
+    function handleOrder(e) {
+        dispatch(updateOrder(e.target.value))
+        setCurrentPage(1);
+        let sortedRecipes = recipesBkp
+
+        if (e.target.value === 'nameAsc') {
+            sortedRecipes = recipes.sort(function (a, b) {
+                if (a.name > b.name) return 1;
+                if (b.name > a.name) return -1;
+                return 0;
+            })
+        } else if (e.target.value === 'nameDes') {
+            sortedRecipes = recipes.sort(function (a, b) {
+                if (a.name > b.name) return -1;
+                if (b.name > a.name) return 1;
+                return 0;
+            })
+        } else if (e.target.value === 'scoreAsc') {
+            sortedRecipes.sort(function (a, b) {
+                return a.score - b.score;
+            });
+        } else if (e.target.value === 'scoreDes') {
+            sortedRecipes.sort(function (a, b) {
+                return b.score - a.score;
+            });
+        }
+        dispatch(changeOrder(sortedRecipes))
+    }
+
+
+
+
+
+
+
     return (
         <div>
             <NavBar />
 
-            <select onChange={e => handleOrderByName(e)} defaultValue={"DEFAULT"} >  {/* Ordenamiento por nombre */}
+
+            <select onChange={e => handleOrder(e)} defaultValue={"DEFAULT"} >  {/* Ordenamiento por nombre */}
+                <option value="DEFAULT" disabled>Select an order</option>
+
+                <optgroup label="Alphabetical Order">
+                    <option value='nameAsc'>Ascending A ➜ Z</option>
+                    <option value='nameDes'>Descending Z ➜ A</option>
+                </optgroup>
+                <option disabled>──────────</option>
+                <optgroup label="Score Order">
+                    <option value='scoreAsc'>Ascending 1 ➜ 9</option>
+                    <option value='scoreDes'>Descending 9 ➜ 1</option>
+                </optgroup>
+
+
+
+            </select >
+
+            {/* <select onChange={e => handleOrderByName(e)} defaultValue={"DEFAULT"} >  
                 <option value="DEFAULT" disabled>Select an order by name</option>
                 <option value='asc'>Ascending  A ➜ Z</option>
                 <option value='des'>Descending  Z ➜ A</option>
             </select >
 
 
-            <select onChange={e => handleOrderByScore(e)} defaultValue={"DEFAULT"} >  {/* Ordenamiento por nombre */}
+            <select onChange={e => handleOrderByScore(e)} defaultValue={"DEFAULT"} >  
                 <option value="DEFAULT" disabled>Select an order by score</option>
                 <option value='asc'>Ascending 1 ➜ 9</option>
                 <option value='des'>Descending 9 ➜ 1</option>
-            </select >
+            </select > */}
 
 
             <select onChange={e => handleFilterRecipesByDiet(e)}>
