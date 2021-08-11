@@ -33,12 +33,7 @@ export default function Home() {
     const paginado = (pageNumber) => {
         setCurrentPage(pageNumber)
     }
-            //        ////
-            //   ..  (°u°)  .. 
-            //     \___|___/
-            //         \
-            //         /\
-            //       _/  \_      
+ 
 
     useEffect(() => {        // Hago una carga inicial de recetas solo la primera vez que se ingresa a esta página. 
         const LoadRecipes = async function () {
