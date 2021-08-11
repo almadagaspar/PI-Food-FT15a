@@ -151,7 +151,7 @@ export default function Home() {
                     loading ? <h1>Loading...</h1> :
                         currentRecipes.map((r, i) => {
                             return (
-                                <Card key={i} image={r.image} name={r.name} score={r.score} diets={r.diets} />
+                                <Card key={i} id={r.id} image={r.image} name={r.name} score={r.score} diets={r.diets} />
                             )
                         })
                     // Si NO hay recetas para mostrar y NO se esta haciendo una busqueda, muestro el mensaje correspondiente

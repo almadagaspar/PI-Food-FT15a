@@ -92,7 +92,7 @@ router.post('/', async (req, res) => {     // Creo una receta en mi base de dato
         score: score,
         healthScore: healthScore,
         instructions: instructions,
-        // createdInDb: createdInDb    // ¿¿ PORQUE SELENE RECOMIENDA ENVIAR ESTE CAMPO ?? SI NO SE ENVIA, SE CARGA IGUAL EN TRUE EN LA DB.
+        // createdInDb: createdInDb    // BORR
     })
 
     //////////////////////////////////////////

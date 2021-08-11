@@ -1,6 +1,8 @@
 
-import { GET_RECIPES, GET_RECIPES_BY_NAME, CHANGE_LOADING_STATE, GET_DIETS,
-         FILTER_RECIPES_BY_DIET, ORDER, CHANGE_ORDER, ADD_RECIPE } from "../actions";
+import {
+  GET_RECIPES, GET_RECIPES_BY_NAME, CHANGE_LOADING_STATE, GET_DIETS,
+  FILTER_RECIPES_BY_DIET, ADD_RECIPE, UPDATE_ORDER, CHANGE_ORDER, GET_DETAILS
+} from "../actions";
 
 
 const initialState = {
@@ -9,6 +11,7 @@ const initialState = {
   recipes: [],   // Todas las recetas cargadas para mostrar. Será modificado al aplicar filtros.
   recipesBkp: [],   // Es una copia del estado 'recipes', y lo uso para hacer los filtrados a travez de el pero sin modificarlo. 
   diets: [],    // Lista de las diferentes dietas a las que puede pertenecer una receta.
+  details: [],
 };
 
 
@@ -52,7 +55,7 @@ export default function reducer(state = initialState, action) {
         selectedFilter: action.payload
       }
 
-    case ORDER:  // Cambio es esatdo 'nameOrder'
+    case UPDATE_ORDER:
       return {
         ...state,
         order: action.payload,   // PROBAR PONER ESTA LINEA AL FINAL DE CHANGE_ORDER PARA PRECINDIE DE ESTE CASE
@@ -66,7 +69,13 @@ export default function reducer(state = initialState, action) {
 
     case ADD_RECIPE:
       return {
-        ...state  
+        ...state
+      }
+
+    case GET_DETAILS:
+      return {
+        ...state,
+        details: action.payload
       }
 
     default:

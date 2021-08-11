@@ -24,8 +24,7 @@ export default function AddRecipe() {
         switch (e.target.name) {   // Vali9dacion para los campos 'score' y 'healthScore'
             case 'score':
             case 'healthScore':
-                if (e.target.value < 1 || e.target.value > 99 || !e.target.value) {
-                    alert('Please, just enter a number beteen 1 and 99.')
+                if (e.target.value < 1 || e.target.value > 99) {
                     return;
                 }
         }
@@ -60,7 +59,7 @@ export default function AddRecipe() {
         e.preventDefault();
         console.log(input)
         dispatch(addRecipe(input));
-        alert('Personaje Creado!');
+        alert('Recipe created!');
         setInput({
             name: "",
             summary: "",
@@ -86,10 +85,12 @@ export default function AddRecipe() {
                 <div>
                     <label>Score:</label>
                     <input type='number' value={input.score} name='score' onChange={e => handleChange(e)} />
+                    <label> Enter a number between 1 and 99.</label>
                 </div>
                 <div>
                     <label>Health score:</label>
                     <input type='number' value={input.healthScore} name='healthScore' onChange={e => handleChange(e)} />
+                    <label> Enter a number between 1 and 99.</label>
                 </div>
                 <div>
                     <label>Summary:</label>
