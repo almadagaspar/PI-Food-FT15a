@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import NavBar from './NavBar.js';
 import { addRecipe } from '../actions/index.js';
 import { useDispatch, useSelector } from 'react-redux';
@@ -27,6 +27,9 @@ export default function AddRecipe() {
                 if (e.target.value < 1 || e.target.value > 99) {
                     return;
                 }
+              break;  
+            default:
+                
         }
 
         setInput({

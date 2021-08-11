@@ -11,7 +11,7 @@ const initialState = {
   recipes: [],   // Todas las recetas cargadas para mostrar. Será modificado al aplicar filtros.
   recipesBkp: [],   // Es una copia del estado 'recipes', y lo uso para hacer los filtrados a travez de el pero sin modificarlo. 
   diets: [],    // Lista de las diferentes dietas a las que puede pertenecer una receta.
-  details: [],
+  details: {},
 };
 
 
