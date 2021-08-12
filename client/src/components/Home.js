@@ -8,7 +8,7 @@ import { getRecipes, getDiets, getRecipesByName, changeLoadingState, filterRecip
 import NavBar from './NavBar.js';
 import Card from './Card.js';
 import Diet from './Diet.js';
-import Paginado from './Paginado.js';
+import Pagination from './Pagination.js';
 
 
 
@@ -128,7 +128,7 @@ export default function Home() {
                 {
                     diets && diets.map((diet, i) => {
                         return (
-                            <Diet diet={diet.name} key={i} />
+                            <Diet diet={diet.name} key={i} />   // CONSIDERAR CAMBIAR POR NOMODULADO.
                         )
                     })
                 }
@@ -143,7 +143,7 @@ export default function Home() {
                 <button type="submit">SEARCH</button>
             </form>
 
-            <Paginado recipesPerPage={recipesPerPage} recipes={recipes.length} paginado={paginado} />
+            <Pagination recipesPerPage={recipesPerPage} recipes={recipes.length} paginado={paginado} />
 
             {
                 // Si se esta haciendo una busqueda o hay recetas cargadas, muesto 'loading...' o las recetas cargadas segun corresponda.

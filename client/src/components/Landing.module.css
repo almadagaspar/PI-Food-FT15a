@@ -1,0 +1,24 @@
+/* Anulo los margenes por de fecto que usan los navegadores web. */    
+* {     
+    margin: 0px; 
+    padding: 0px; 
+}
+
+
+.landing {   
+    background-image: url("../imgs/landingBackground.jpg");
+    background-repeat: no-repeat;
+    height: 945px;
+    text-align: right;
+}
+
+.title {
+    margin-top: 300px;
+    margin-right: 120px;
+    width: 600px;
+}
+
+/* EJEMPLOS
+ <div className={`${s.producto} ${s.hola}`}>
+ <h3 className={s.hola}>{props.title}</h3> 
+ */

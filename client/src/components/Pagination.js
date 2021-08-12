@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Paginado({ recipesPerPage, recipes, paginado }) {
+export default function Pagination({ recipesPerPage, recipes, paginado }) {
     const pageNumbers = [];
 
     for (let i = 1; i <= Math.ceil(recipes / recipesPerPage); i++) {

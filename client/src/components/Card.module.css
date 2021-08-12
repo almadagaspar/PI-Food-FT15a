@@ -1,0 +1,13 @@
+.card {
+    color:black;
+    font-size: 15px;
+    background-color: rgb(223, 223, 223);
+    font-weight: bold;
+}
+
+
+.card:hover {
+    color: red;
+    font-size: 20px;
+    font-weight: bold;
+}
