@@ -16,15 +16,6 @@ export default function Details(props) {
 
 
 
-    useEffect(() => {
-        console.log('Estoy en el DOM!!');
-      return() => {
-          console.log('Adios!!');
-      }	
-    },[])
-
-
-
     return (
         <Rect.Fragment>
             <NavBar />
@@ -33,29 +24,30 @@ export default function Details(props) {
                 !loading ?
                     <div>
                         <h1>Name: {details.name}</h1>
-                        <p>Summary: {details.summary}</p>
+                        {
+                           details.summary ? <p>Summary: {details.summary.replace( /(<([^>]+)>)/ig, '')}</p>
+                           :  <p>Sumary: There are no a summary for this recipe.</p>
+                        }
                         <h4>Score: {details.score}</h4>
                         <h4>Health Score: {details.healthScore}</h4>
-                        <p>Instructions: {details.instructions}</p>
+                        {
+                            details.instructions ? <p>Instructions: {details.instructions.replace( /(<([^>]+)>)/ig, '')}</p>
+                            :  <p>Instructions: There are no instructions for this recipe.</p>
+                        }
+
                         <h2>Dish Types:</h2>
                         {
                             details.dishTypes ? details.dishTypes.map((dt, i) => {
-                                return (
-                                    <h4 ke={i}>{dt}</h4>
-                                )
+                                return ( <h4 key={i}>{dt}</h4> )
                             }) :
                             <h4>This recipe has no dish types</h4>
-
-
                         }
                         <h2>Diets:</h2>
                         {
-                            details.diets?.map((d, i) => {
-                                return (
-                                    <h4 ke={i}>{d}</h4>
-                                )
+                            details.diets.length ? details.diets.map((d, i) => {
+                                return ( <h4 key={i}>{d}</h4>  )
                             })
-
+                            :  <h4> There are no diets for this recipe.</h4>
                         }
 
 
