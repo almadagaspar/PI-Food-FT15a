@@ -14,7 +14,7 @@ const { Recipe, Diet } = require('../db.js');     // Importo los modelos que nec
 router.get('/', async (req, res) => {
     if (req.query.name) {      // Si se envió un nombre de receta para la busqueda, retorno las 100 recetas cuyo nombre incluya la palabra recibida.
         const dbRecipes = await Recipe.findAll({
-            attributes: ['id', 'name', 'score', 'createdInDb'],     // Solo quiero estos campos.
+            attributes: ['id', 'name', 'score'],     // Solo quiero estos campos.
             include: {                                   // Incluto las dietas relacionadas a esta receta.
                 model: Diet,
                 attributes: ['name'],
@@ -58,7 +58,7 @@ router.get('/', async (req, res) => {
 
 
         const dbRecipes = await Recipe.findAll({      // Busco todas las dietas de mi base de datos.
-            attributes: ['id', 'name', 'score', 'createdInDb'],    // Solo quiero estos campos.
+            attributes: ['id', 'name', 'score'],    // Solo quiero estos campos.
             include: {                                       // Incluto las dietas relacionadas a esta receta.
                 model: Diet,
                 attributes: ['name'],
@@ -105,7 +105,7 @@ function formatChange(recipesToFormat) {
             id: recipesToFormat[i].id,
             name: recipesToFormat[i].name,
             score: recipesToFormat[i].score,
-            createdInDb: recipesToFormat[i].createdInDb,      // BORRAR SI AVANZANDO EN EL PI, NO RESULTA NECESARIO.
+            // createdInDb: recipesToFormat[i].createdInDb,      // BORRAR SI AVANZANDO EN EL PI, NO RESULTA NECESARIO.
             diets: recipesToFormat[i].diets && recipesToFormat[i].diets.map(d => d.name)
         }
         dbRecipesFormated.push(recipeFormated)

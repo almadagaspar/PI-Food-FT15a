@@ -34,7 +34,7 @@ router.get('/:id', async (req, res) => {
                     score: dbRecipe.score,
                     healthScore: dbRecipe.healthScore,
                     instructions: dbRecipe.instructions,
-                    createdInDb: dbRecipe.createdInDb,     // BORRAR SI AVANZANDO EN EL PI, NO RESULTA NECESARIO.
+                    // createdInDb: dbRecipe.createdInDb,     // BORRAR SI AVANZANDO EN EL PI, NO RESULTA NECESARIO.
                     diets: dbRecipe.diets && dbRecipe.diets.map(d => d.name)
                 }
                 return res.json(recipeToSend) // Envio al Front la receta encontrada.
@@ -91,29 +91,13 @@ router.post('/', async (req, res) => {     // Creo una receta en mi base de dato
         summary: summary,
         score: score,
         healthScore: healthScore,
-        instructions: instructions,
+        instructions: instructions
         // createdInDb: createdInDb    // BORR
     })
-
-    //////////////////////////////////////////
-    // Si se me complica enviar desde el Frond los id de las dietas a las que pertenece una nueva receta creada, remplazar el codigo de esta area
-    // por el que está comentado más abajo, y en vez de enviar los id de las dietas, enviar sus nombres.
-
 
     await newRecipe.addDiets(diets);     // Agrego en la tabla intermedia 'recipe_diet' un registro (recipeId y dietID) por cada dieta a la que pertenece esta nueva receta.
     res.json(newRecipe)     // Respondo con toda la información de la nueva receta creada en la DB.
 
-
-    //////////////////////////////////////////
-
-
-    // // Busco en mi DB las dietas que coincidan con las que me llegan por body, y lo guardo en un array para usarlo como parámetro abajo, en .addDiets
-    // let dietsDb = await Diet.findAll({
-    //     where: { name: diets }
-    // })
-
-    // await newRecipe.addDiets(dietsDb);     // Agrego en la tabla intermedia 'recipe_diet' un registro (recipeId y dietID) por cada dieta a la que pertenece esta nueva receta.
-    // res.json(newRecipe)     // Respondo con toda la información de la nueva receta creada en la DB.
 })
 
 

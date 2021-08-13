@@ -40,12 +40,12 @@ module.exports = (sequelize) => {
       type: DataTypes.TEXT,
       allowNull: true,
       defaultValue: 'There are not instructions'
-    },
-
-    createdInDb: {         // BORRAR SI AVANZANDO EN EL PI, NO RESULTA NECESARIO.
-      type: DataTypes.BOOLEAN,
-      defaultValue: true
     }
+
+    // createdInDb: {         // BORRAR SI AVANZANDO EN EL PI, NO RESULTA NECESARIO.
+    //   type: DataTypes.BOOLEAN,
+    //   defaultValue: true
+    // }
 
   });
 };

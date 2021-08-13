@@ -28,7 +28,7 @@ async function loadDietsInDb() {
         })
     }
 };
-// loadDietsInDb();
+// loadDietsInDb();    // Descomentar si necesito que se vuelvan a cargar las dietas en mi DB. Antes poner:   conn.sync({ force: false })  en true.
 
 
 
@@ -43,18 +43,3 @@ router.get('/', async (req, res) => {
 
 module.exports = router;
 
-
-
-
-// METODO INCORRECTO
-// Función para cargar los tipos de dieta en mi Base de Datos apenas se inicie mi servidor.
-// async function loadDietsInDb() {
-//     const dietsTypes = ['Gluten Free', 'Ketogenic', 'Vegetarian', 'Lacto-Vegetarian', 'Ovo-Vegetarian', 'Vegan', 'Pescetarian', 'Paleo', 'Primal', 'Whole30']
-    
-//     for (let i = 0; i < dietsTypes.length; i++) {     // Por cada tipo de dieta, agrego un registro en la tabla de 'diets' de mi Base de Datos.        
-//         await Diet.findOrCreate({      // Para usar con:   { force: false }
-//             where: { name: dietsTypes[i] }
-//         })
-//     }
-// };
-// loadDietsInDb();

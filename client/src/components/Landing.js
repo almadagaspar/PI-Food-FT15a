@@ -1,15 +1,17 @@
 import { Link } from 'react-router-dom'
 import food from "../imgs/food.jpg"
-import s from "./Landing.module.css"    
+import s from "./Landing.module.css"
 
 
-function Landing() {   
+function Landing() {
     return (
         <div className={s.landing}>
-            <img className={s.title} src={food} />
-            <Link to='/home'>
-                <button> ENTRAR </button>  
-            </Link>
+            <div className={s.title}>
+                <img src={food} />
+                <Link to='/home'>
+                    <button> ENTRAR </button>
+                </Link>
+            </div>
         </div>
     );
 };

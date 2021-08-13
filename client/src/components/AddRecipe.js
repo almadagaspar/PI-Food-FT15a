@@ -12,7 +12,7 @@ export default function AddRecipe() {
     const [input, setInput] = useState({
         name: "",
         summary: "",
-        score: 1,      // ¿¿ ESTA BIEN QUE SEA NUMERICO O DEBE SER UN STRING COMO EN POSTMAN ??
+        score: 1,
         healthScore: 1,
         instructions: "",
         diets: []
@@ -20,24 +20,22 @@ export default function AddRecipe() {
 
 
     function handleChange(e) {  // Para manejar los inputs del tipo: text, number y textarea.
-
-        switch (e.target.name) {   // Vali9dacion para los campos 'score' y 'healthScore'
+        // console.log(e.target.name + ': ', e.target.value);
+        switch (e.target.name) {   // Validacion para los campos 'score' y 'healthScore'
             case 'score':
             case 'healthScore':
-                if (e.target.value < 1 || e.target.value > 99) {
+                if (e.target.value < 1 || e.target.value > 99 || e.target.value.length > 2) { // Limito los números a ingresar.
                     return;
                 }
-              break;  
+                break;
             default:
-                
         }
 
         setInput({
             ...input,
             [e.target.name]: e.target.value
-        })
-        // console.log(e.target.name + ': ', e.target.value);
 
+        })
 
     }
 
@@ -88,12 +86,10 @@ export default function AddRecipe() {
                 <div>
                     <label>Score:</label>
                     <input type='number' value={input.score} name='score' onChange={e => handleChange(e)} />
-                    <label> Enter a number between 1 and 99.</label>
                 </div>
                 <div>
                     <label>Health score:</label>
                     <input type='number' value={input.healthScore} name='healthScore' onChange={e => handleChange(e)} />
-                    <label> Enter a number between 1 and 99.</label>
                 </div>
                 <div>
                     <label>Summary:</label>
