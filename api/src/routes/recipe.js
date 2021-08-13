@@ -34,7 +34,6 @@ router.get('/:id', async (req, res) => {
                     score: dbRecipe.score,
                     healthScore: dbRecipe.healthScore,
                     instructions: dbRecipe.instructions,
-                    // createdInDb: dbRecipe.createdInDb,     // BORRAR SI AVANZANDO EN EL PI, NO RESULTA NECESARIO.
                     diets: dbRecipe.diets && dbRecipe.diets.map(d => d.name)
                 }
                 return res.json(recipeToSend) // Envio al Front la receta encontrada.
@@ -92,7 +91,6 @@ router.post('/', async (req, res) => {     // Creo una receta en mi base de dato
         score: score,
         healthScore: healthScore,
         instructions: instructions
-        // createdInDb: createdInDb    // BORR
     })
 
     await newRecipe.addDiets(diets);     // Agrego en la tabla intermedia 'recipe_diet' un registro (recipeId y dietID) por cada dieta a la que pertenece esta nueva receta.

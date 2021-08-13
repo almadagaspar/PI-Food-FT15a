@@ -6,15 +6,15 @@ import s from './NavBar.module.css';
 
 export default function NavBar() {    // Mi barra de navegación.
     return (
-        <header className={s.navbar}>
+        <header >
             <img src={food} />
             <nav>
-                <ul className={s.list}>
-                    <li className={s.listItem}>
-                        <NavLink exact to="/home" >Home</NavLink>
-                        <NavLink to="/addrecipe" >Add a Recipe</NavLink>
-                    </li>
-                </ul>
+                <NavLink exact to="/home" className={s.navItem} >
+                    <span>Home</span>
+                </NavLink>
+                <NavLink to="/addrecipe" className={s.navItem} >
+                    <span>Add a Recipe</span>
+                </NavLink>
             </nav>
         </header>
     )

@@ -5,7 +5,7 @@ module.exports = (sequelize) => {
     // defino el modelo
     sequelize.define('diet', {
 
-        // Al no definidtle una Primary Key, se le agregará una Primary Key númerica y autoincrementable automáticamente.
+        // Al no definirle una Primary Key, se le agregará una Primary Key númerica y autoincrementable automáticamente.
         name: {        // Nombre de la dieta.
             type: DataTypes.STRING,
             allowNull: true,

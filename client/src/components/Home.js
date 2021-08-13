@@ -7,7 +7,6 @@ import { getRecipes, getDiets, getRecipesByName, changeLoadingState, filterRecip
 // Importo los componentes que voy a necesitar en este componente.
 import NavBar from './NavBar.js';
 import Card from './Card.js';
-import Diet from './Diet.js';
 import Pagination from './Pagination.js';
 
 
@@ -109,7 +108,7 @@ export default function Home() {
         <div>
             <NavBar />
 
-            <select onChange={e => handleOrder(e)} defaultValue={"DEFAULT"} >  {/* Ordenamiento alfabetico y por puntuación. */}
+            <select onChange={e => handleOrder(e)} defaultValue={"DEFAULT"} >  {/* Defino u select para ordenamiento alfabetico y por puntuación. */}
                 <option value="DEFAULT" disabled>Select an order</option>
                 <optgroup label="Alphabetical Order">
                     <option value='nameAsc'>Ascending A ➜ Z</option>
@@ -123,12 +122,12 @@ export default function Home() {
             </select >
 
 
-            <select onChange={e => handleFilterRecipesByDiet(e)}>
+            <select onChange={e => handleFilterRecipesByDiet(e)}>    {/* Defino un select para filtrado, con las dietas que ya se cargaron en el estado global. */}
                 <option value='All'>All</option>
                 {
                     diets && diets.map((diet, i) => {
                         return (
-                            <Diet diet={diet.name} key={i} />   // CONSIDERAR CAMBIAR POR NOMODULADO.
+                            <option value={diet.name} key={i}>{diet.name}</option>   
                         )
                     })
                 }
