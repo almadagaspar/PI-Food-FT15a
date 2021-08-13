@@ -6,10 +6,10 @@ import s from "./Landing.module.css"
 function Landing() {
     return (
         <div className={s.landing}>
-            <div className={s.title}>
+            <div className={s.titleAndButton}>
                 <img src={food} />
                 <Link to='/home'>
-                    <button> ENTRAR </button>
+                    <button> ENTER </button>
                 </Link>
             </div>
         </div>

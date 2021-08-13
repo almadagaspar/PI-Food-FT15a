@@ -11,7 +11,7 @@ export default function Card({ id, image, name, score, diets }) {  // Accedo med
         <span className={s.card}>Name: {name}</span><br />
         <span>Score: {score}</span><br />
         <span>Diets: </span><br />
-        <ol>
+        <ul>
           {
             diets && diets.map((d, i) => {        /* Muestro todos las dietas de la receta */
               return (
@@ -19,7 +19,7 @@ export default function Card({ id, image, name, score, diets }) {  // Accedo med
               )
             })
           }
-        </ol>
+        </ul>
       </Link>
     </div>
   );
