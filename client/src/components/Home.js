@@ -8,7 +8,7 @@ import { getRecipes, getDiets, getRecipesByName, changeLoadingState, filterRecip
 import NavBar from './NavBar.js';
 import Card from './Card.js';
 import Pagination from './Pagination.js';
-
+import s from "./Home.module.css"
 
 
 export default function Home() {
@@ -32,7 +32,7 @@ export default function Home() {
     const paginado = (pageNumber) => {
         setCurrentPage(pageNumber)
     }
- 
+
 
     useEffect(() => {        // Hago una carga inicial de recetas solo la primera vez que se ingresa a esta página. 
         const LoadRecipes = async function () {
@@ -101,46 +101,53 @@ export default function Home() {
     }
 
 
-// ***** En el input de busqueda tiene un value={recipeName}, probar usar algo pareceido para llevar el filtro a All despues de una nueva busqueda.
+    // ***** En el input de busqueda tiene un value={recipeName}, probar usar algo pareceido para llevar el filtro a All despues de una nueva busqueda.
 
 
     return (
-        <div>
+        <div className={s.home}>
             <NavBar />
+            <div className={s.searchOrderFilter}>
 
-            <select onChange={e => handleOrder(e)} defaultValue={"DEFAULT"} >  {/* Defino u select para ordenamiento alfabetico y por puntuación. */}
-                <option value="DEFAULT" disabled>Select an order</option>
-                <optgroup label="Alphabetical Order">
-                    <option value='nameAsc'>Ascending A ➜ Z</option>
-                    <option value='nameDes'>Descending Z ➜ A</option>
-                </optgroup>
-                <option disabled>──────────</option>
-                <optgroup label="Score Order">
-                    <option value='scoreAsc'>Ascending 1 ➜ 9</option>
-                    <option value='scoreDes'>Descending 9 ➜ 1</option>
-                </optgroup>
-            </select >
-
-
-            <select onChange={e => handleFilterRecipesByDiet(e)}>    {/* Defino un select para filtrado, con las dietas que ya se cargaron en el estado global. */}
-                <option value='All'>All</option>
-                {
-                    diets && diets.map((diet, i) => {
-                        return (
-                            <option value={diet.name} key={i}>{diet.name}</option>   
-                        )
-                    })
-                }
-            </select>
-
-
-            <h2>Search by Recipe</h2>
-            <form onSubmit={handleSubmit}>
-                <span>
+                <form onSubmit={handleSubmit}>
+                    <span>SEARCH BY RECIPE: </span>
                     <input type="text" placeholder="Write the name here!" onChange={handleChange} value={recipeName} autoComplete="off" />
-                </span>
-                <button type="submit">SEARCH</button>
-            </form>
+                    <button type="submit">SEARCH</button>
+                </form>
+
+
+                <div className={s.order}>
+                    <span>ORDER: </span>
+                    <select onChange={e => handleOrder(e)} defaultValue={"DEFAULT"} >  {/* Defino u select para ordenamiento alfabetico y por puntuación. */}
+
+                        <option value="DEFAULT" disabled>Select an order</option>
+                        <optgroup label="Alphabetical Order">
+                            <option value='nameAsc'>Ascending A ➜ Z</option>
+                            <option value='nameDes'>Descending Z ➜ A</option>
+                        </optgroup>
+                        <option disabled>──────────</option>
+                        <optgroup label="Score Order">
+                            <option value='scoreAsc'>Ascending 1 ➜ 9</option>
+                            <option value='scoreDes'>Descending 9 ➜ 1</option>
+                        </optgroup>
+                    </select >
+                </div>
+
+                <div className={s.filter}>
+                <span>FILTER: </span>
+
+                    <select onChange={e => handleFilterRecipesByDiet(e)}>    {/* Defino un select para filtrado, con las dietas que ya se cargaron en el estado global. */}
+                        <option value='All'>All</option>
+                        {
+                            diets && diets.map((diet, i) => {
+                                return (
+                                    <option value={diet.name} key={i}>{diet.name}</option>
+                                )
+                            })
+                        }
+                    </select>
+                </div>
+            </div>
 
             <Pagination recipesPerPage={recipesPerPage} recipes={recipes.length} paginado={paginado} />
 
