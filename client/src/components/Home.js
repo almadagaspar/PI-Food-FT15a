@@ -69,69 +69,60 @@ export default function Home() {
 
 
 
-    function handleOrder(e) {
-        setCurrentPage(1);
-        
-        
-        // Ordeno 'recipes'
-        let sortedRecipes = [...recipes]  
 
-        if (e.target.value === 'nameAsc') {     // PROBAR CAMBIAR LOS IF POR SWITCH.
-            sortedRecipes.sort(function (a, b) {
-                if (a.name > b.name) return 1;
-                if (b.name > a.name) return -1;
-                return 0;
-            })
-        } else if (e.target.value === 'nameDes') {
-            sortedRecipes.sort(function (a, b) {
-                if (a.name > b.name) return -1;
-                if (b.name > a.name) return 1;
-                return 0;
-            })
-        } else if (e.target.value === 'scoreAsc') {
-            sortedRecipes.sort(function (a, b) {
-                return a.score - b.score;
-            });
-        } else if (e.target.value === 'scoreDes') {
-            sortedRecipes.sort(function (a, b) {
-                return b.score - a.score;
-            });
+
+    function sortArray(arrayToSort, sortType) {  // Con esta función ordeno 'recipes' y 'recipesBkp'.
+        switch (sortType) {
+            case 'alphAsc':
+                arrayToSort.sort(function (a, b) {
+                    if (a.name > b.name) return 1;
+                    if (b.name > a.name) return -1;
+                    return 0;
+                })
+                break;
+            case 'alphDes':
+                arrayToSort.sort(function (a, b) {
+                    if (a.name > b.name) return -1;
+                    if (b.name > a.name) return 1;
+                    return 0;
+                })
+                break;
+            case 'scoreAsc':
+                arrayToSort.sort(function (a, b) {
+                    return a.score - b.score;
+                });
+                break;
+            case 'scoreDes':
+                arrayToSort.sort(function (a, b) {
+                    return b.score - a.score;
+                });
+                break;
+            default:
         }
-        dispatch(changeOrder(sortedRecipes))
-
-
-
-        // Ordeno 'recipesBkp'
-        let sortedRecipesBkp = [...recipesBkp] 
-
-        if (e.target.value === 'nameAsc') {     // PROBAR CAMBIAR LOS IF POR SWITCH.
-            sortedRecipesBkp.sort(function (a, b) {
-                if (a.name > b.name) return 1;
-                if (b.name > a.name) return -1;
-                return 0;
-            })
-        } else if (e.target.value === 'nameDes') {
-            sortedRecipesBkp.sort(function (a, b) {
-                if (a.name > b.name) return -1;
-                if (b.name > a.name) return 1;
-                return 0;
-            })
-        } else if (e.target.value === 'scoreAsc') {
-            sortedRecipesBkp.sort(function (a, b) {
-                return a.score - b.score;
-            });
-        } else if (e.target.value === 'scoreDes') {
-            sortedRecipesBkp.sort(function (a, b) {
-                return b.score - a.score;
-            });
-        }
-        dispatch(changeOrderBkp(sortedRecipesBkp))
-
+        return arrayToSort;
     }
 
 
-    // ***** En el input de busqueda tiene un value={recipeName}, probar usar algo pareceido para llevar el filtro a All despues de una nueva busqueda.
 
+
+    function handleOrder(e) {
+        setCurrentPage(1)
+
+        // Ordeno una copia de cada estado porque usando Redux los estados solo se deben modificar en el Reducer. 
+        let sortedRecipes = [...recipes]   // Para ordenar 'recipes'
+        sortedRecipes = sortArray(sortedRecipes, e.target.value)
+        dispatch(changeOrder(sortedRecipes))
+
+        let sortedRecipesBkp = [...recipesBkp] // Para ordenar 'recipesBkp'
+        sortedRecipesBkp = sortArray(sortedRecipesBkp, e.target.value)
+        dispatch(changeOrderBkp(sortedRecipesBkp))
+    }
+
+
+
+
+
+    // ***** En el input de busqueda tiene un value={recipeName}, probar usar algo pareceido para llevar el filtro a All despues de una nueva busqueda.
 
     return (
         <div className={s.home}>
@@ -150,8 +141,8 @@ export default function Home() {
                     <select onChange={e => handleOrder(e)} defaultValue={"DEFAULT"} >  {/* Defino un select para ordenamiento alfabetico y por puntuación. */}
                         <option value="DEFAULT" disabled>Select an order</option>
                         <optgroup label="Alphabetical Order">
-                            <option value='nameAsc'>Ascending A ➜ Z</option>
-                            <option value='nameDes'>Descending Z ➜ A</option>
+                            <option value='alphAsc'>Ascending A ➜ Z</option>
+                            <option value='alphDes'>Descending Z ➜ A</option>
                         </optgroup>
                         <option disabled>──────────</option>
                         <optgroup label="Score Order">
