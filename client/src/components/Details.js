@@ -1,7 +1,9 @@
 import Rect, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
-import NavBar from './NavBar.js';
 import { getDetails } from '../actions/index.js'
+import NavBar from './NavBar.js';
+import imageNotAvailable from "../imgs/imageNotAvalible.jpg"
+
 
 
 export default function Details(props) {
@@ -19,10 +21,12 @@ export default function Details(props) {
     return (
         <Rect.Fragment>
             <NavBar />
-            <h1>Details</h1>
+            <h1> Recipe details:</h1>
             {
                 !loading ?
                     <div>
+                        <img src={details.image ? details.image : imageNotAvailable} alt="" width="560px" height="400px" /><br />
+
                         <h1>Name: {details.name}</h1>
                         {
                            details.summary ? <p>Summary: {details.summary.replace( /(<([^>]+)>)/ig, '')}</p>

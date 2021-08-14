@@ -1,4 +1,5 @@
-import React from 'react';
+// import React from 'react';
+import s from "./Pagination.module.css"
 
 export default function Pagination({ recipesPerPage, recipes, paginado }) {
     const pageNumbers = [];
@@ -8,7 +9,7 @@ export default function Pagination({ recipesPerPage, recipes, paginado }) {
     }
 
     return (
-        <nav>
+        <div className={s.pagination}>
             {/* <ul> */}
                 {pageNumbers &&
                     pageNumbers.map((number,i) => (
@@ -18,6 +19,6 @@ export default function Pagination({ recipesPerPage, recipes, paginado }) {
                     ))
                 }
             {/* </ul> */}
-        </nav>
+        </div>
     )
 }

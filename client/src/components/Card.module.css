@@ -1,13 +1,30 @@
 .card {
+    /* display: flex;
+    flex-direction: row; */
+    border: 3px rgba(0, 0, 0, 0.212) solid;
+    width: 550px;
+    height: 200px;
+    border-radius: 12px;
+    
     color:black;
     font-size: 15px;
-    background-color: rgb(223, 223, 223);
+    background-color: rgba(221, 118, 0, 0.657);
     font-weight: bold;
 }
 
 
-.card:hover {
+.card img {
+    width: 200px;
+    border: 3px rgba(0, 0, 0, 0.315) solid;
+    border-radius: 12px;
+  margin: 5px;
+  /* margin-top: 5px; */
+
+}
+
+
+/* .card:hover {
     color: red;
     font-size: 20px;
     font-weight: bold;
-}
+} */

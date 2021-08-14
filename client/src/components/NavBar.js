@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import { NavLink } from 'react-router-dom';
 import food from "../imgs/food_small.png"
 import s from './NavBar.module.css';

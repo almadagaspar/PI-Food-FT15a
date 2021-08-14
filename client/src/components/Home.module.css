@@ -1,5 +1,7 @@
 .home {   
     background-image: url("../imgs/home_background.jpg");
+    background-size:auto;
+    height: 945px;
 
 }
 
@@ -10,8 +12,8 @@
     align-items: center;
     justify-content: space-evenly;
 
-    border-bottom:  3px rgba(184, 104, 0, 0.281) solid;
-    background-color: rgba(199, 155, 88, 0.562);
+    border-bottom:  2px rgba(155, 88, 0, 0.322) solid;
+    background-color: rgba(173, 134, 74, 0.562);
     height: 50px;
     width: 100%;
 
@@ -64,3 +66,19 @@
     height: 30px;
     font-size: 20px;
 }
+
+
+.loading {
+    height: 800px;
+    font-size: 30px;
+}
+
+
+.cards_container {
+    display: grid;
+    grid-template-columns: 33% 33% 33% ;
+    grid-template-rows: auto auto auto ;
+    justify-items: center;
+    align-items: center;
+}
+

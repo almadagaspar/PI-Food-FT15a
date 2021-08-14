@@ -8,6 +8,7 @@ import { getRecipes, getDiets, getRecipesByName, changeLoadingState, filterRecip
 import NavBar from './NavBar.js';
 import Card from './Card.js';
 import Pagination from './Pagination.js';
+import Footer from './Footer.js';
 import s from "./Home.module.css"
 
 
@@ -75,25 +76,17 @@ export default function Home() {
         // El método .sort() INVIERTE el orden de los elementos comparados si su RETURN devuelve un número POSITIVO
         // En cuantoa a STRINGS: las letras cercanas a 'a' son menores a las cercanas a 'z'. Las letras mayúsculas son menores a las minusculas, y las números son menores a las letras ('5' < 'M').
         if (sortType === 'alphAsc') {
-            arrayToSort.sort((a, b) => {
-                return (a.name < b.name) ? -1 : 1;
-            })
-        }
+            arrayToSort.sort((a, b) => { return (a.name < b.name) ? -1 : 1; });
+        };
         if (sortType === 'alphDes') {
-            arrayToSort.sort((a, b) => {
-                return (a.name > b.name) ? -1 : 1;
-            })
-        }
+            arrayToSort.sort((a, b) => { return (a.name > b.name) ? -1 : 1; });
+        };
         if (sortType === 'scoreAsc') {
-            arrayToSort.sort((a, b) => {
-                return a.score - b.score;
-            });
-        }
+            arrayToSort.sort((a, b) => { return a.score - b.score; });
+        };
         if (sortType === 'scoreDes') {
-            arrayToSort.sort((a, b) => {
-                return b.score - a.score;
-            });
-        }
+            arrayToSort.sort((a, b) => { return b.score - a.score; });
+        };
         return arrayToSort;
     }
 
@@ -103,13 +96,13 @@ export default function Home() {
         setCurrentPage(1)
 
         // Ordeno una copia de cada estado porque usando Redux los estados solo se deben modificar en el Reducer. 
-        let sortedRecipes = [...recipes]   // Para ordenar 'recipes'
-        sortedRecipes = sortArray(sortedRecipes, e.target.value)
-        dispatch(changeOrder(sortedRecipes))
+        let sortedRecipes = [...recipes];   // Para ordenar 'recipes'
+        sortedRecipes = sortArray(sortedRecipes, e.target.value);
+        dispatch(changeOrder(sortedRecipes));
 
-        let sortedRecipesBkp = [...recipesBkp] // Para ordenar 'recipesBkp'
-        sortedRecipesBkp = sortArray(sortedRecipesBkp, e.target.value)
-        dispatch(changeOrderBkp(sortedRecipesBkp))
+        let sortedRecipesBkp = [...recipesBkp]; // Para ordenar 'recipesBkp'
+        sortedRecipesBkp = sortArray(sortedRecipesBkp, e.target.value);
+        dispatch(changeOrderBkp(sortedRecipesBkp));
     }
 
 
@@ -162,21 +155,24 @@ export default function Home() {
 
             <Pagination recipesPerPage={recipesPerPage} recipes={recipes.length} paginado={paginado} />
 
-            {
-                // Si se esta haciendo una busqueda o hay recetas cargadas, muesto 'loading...' o las recetas cargadas segun corresponda.
-                loading || recipes.length ?
-                    loading ? <h1>Loading...</h1> :
-                        currentRecipes.map((r, i) => {
-                            return (
-                                <Card key={i} id={r.id} image={r.image} name={r.name} score={r.score} diets={r.diets} />
-                            )
-                        })
-                    // Si NO hay recetas para mostrar y NO se esta haciendo una busqueda, muestro el mensaje correspondiente
-                    // segun si la razón por la cual no hay recetas es por una busqueda por nombre sin resultados, o por elegir un filtro sin resultados.  .
-                    : recipesBkp.length && !recipes.length ? <h2>THERE ARE NO RECIPES TO SHOW WITH THAT FILTER !</h2>
-                        : <h2>THERE ARE NO RECIPES WITH THAT NAME !</h2>
+            <div className={s.cards_container}>
+                {
+                    // Si se esta haciendo una busqueda o hay recetas cargadas, muesto 'loading...' o las recetas cargadas segun corresponda.
+                    loading || recipes.length ?
+                        loading ? <div className={s.loading} >Loading...</div> :
+                            currentRecipes.map((r, i) => {
+                                return (
+                                    <Card key={i} id={r.id} image={r.image} name={r.name} score={r.score} diets={r.diets} />
+                                )
+                            })
+                        // Si NO hay recetas para mostrar y NO se esta haciendo una busqueda, muestro el mensaje correspondiente
+                        // segun si la razón por la cual no hay recetas es por una busqueda por nombre sin resultados, o por elegir un filtro sin resultados.  .
+                        : recipesBkp.length && !recipes.length ? <h2>THERE ARE NO RECIPES TO SHOW WITH THAT FILTER !</h2>
+                            : <h2>THERE ARE NO RECIPES WITH THAT NAME !</h2>
 
-            }
+                }
+            </div>
+            <Footer />
         </div >
     );
 };
