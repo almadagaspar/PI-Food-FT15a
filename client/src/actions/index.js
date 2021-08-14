@@ -5,10 +5,14 @@ export const GET_DIETS = "GET_DIETS";
 export const GET_RECIPES_BY_NAME = "GET_RECIPES_BY_NAME";
 export const CHANGE_LOADING_STATE = 'CHANGE_LOADING_STATE';
 export const FILTER_RECIPES_BY_DIET = 'FILTER_RECIPES_BY_DIET';
-export const UPDATE_ORDER = "UPDATE_ORDER"
-export const CHANGE_ORDER = "CHANGE_ORDER"
 export const ADD_RECIPE = "ADD_RECIPE"
 export const GET_DETAILS = "GET_DETAILS"
+export const CHANGE_ORDER = "CHANGE_ORDER"
+export const CHANGE_ORDER_BKP = "CHANGE_ORDER_BKP"
+
+
+
+
 
 //// ACTIONS CREATORS
 
@@ -96,13 +100,6 @@ export function filterRecipesByDiet(payload) {
 }
 
 
-export function updateOrder(payload) {
-  return {
-    type: UPDATE_ORDER,
-    payload
-  }
-}
-
 export function changeOrder(payload) {
   return {
     type: CHANGE_ORDER,
@@ -111,3 +108,9 @@ export function changeOrder(payload) {
 }
 
 
+export function changeOrderBkp(payload) {
+  return {
+    type: CHANGE_ORDER_BKP,
+    payload
+  }
+}

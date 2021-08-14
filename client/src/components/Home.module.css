@@ -10,8 +10,8 @@
     align-items: center;
     justify-content: space-evenly;
 
-    border-bottom:  3px rgba(184, 104, 0, 0.473) solid;
-    background-color: rgba(199, 155, 88, 0.651);
+    border-bottom:  3px rgba(184, 104, 0, 0.281) solid;
+    background-color: rgba(199, 155, 88, 0.562);
     height: 50px;
     width: 100%;
 
@@ -20,7 +20,7 @@
 
 
 .searchOrderFilter span{
-    font-size: 20px;
+    font-size: 19px;
     color: rgb(100, 68, 0);
 }
 

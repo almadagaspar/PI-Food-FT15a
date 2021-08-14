@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 // Importo las Action.
-import { getRecipes, getDiets, getRecipesByName, changeLoadingState, filterRecipesByDiet, updateOrder, changeOrder } from '../actions/index.js'
+import { getRecipes, getDiets, getRecipesByName, changeLoadingState, filterRecipesByDiet, changeOrder, changeOrderBkp } from '../actions/index.js'
 
 // Importo los componentes que voy a necesitar en este componente.
 import NavBar from './NavBar.js';
@@ -19,8 +19,6 @@ export default function Home() {
     const diets = useSelector(state => state.diets)  // Accedo al estado global 'diets'.
     const [recipeName, setRecipeName] = useState("");  // Creo un estado local para almacenar dinamicamente el contenido del input con el nombre de la receta a buscar.
 
-    // ORDENAMIENTO
-    const order = useSelector(state => state.order)   // importo este estado solo para que se rendericen los cambios de ordenamiento.
 
     // PAGINADO:
     const [currentPage, setCurrentPage] = useState(1);
@@ -72,18 +70,20 @@ export default function Home() {
 
 
     function handleOrder(e) {
-        dispatch(updateOrder(e.target.value))
         setCurrentPage(1);
-        let sortedRecipes = recipesBkp
+        
+        
+        // Ordeno 'recipes'
+        let sortedRecipes = [...recipes]  
 
-        if (e.target.value === 'nameAsc') {
-            sortedRecipes = recipes.sort(function (a, b) {
+        if (e.target.value === 'nameAsc') {     // PROBAR CAMBIAR LOS IF POR SWITCH.
+            sortedRecipes.sort(function (a, b) {
                 if (a.name > b.name) return 1;
                 if (b.name > a.name) return -1;
                 return 0;
             })
         } else if (e.target.value === 'nameDes') {
-            sortedRecipes = recipes.sort(function (a, b) {
+            sortedRecipes.sort(function (a, b) {
                 if (a.name > b.name) return -1;
                 if (b.name > a.name) return 1;
                 return 0;
@@ -98,6 +98,35 @@ export default function Home() {
             });
         }
         dispatch(changeOrder(sortedRecipes))
+
+
+
+        // Ordeno 'recipesBkp'
+        let sortedRecipesBkp = [...recipesBkp] 
+
+        if (e.target.value === 'nameAsc') {     // PROBAR CAMBIAR LOS IF POR SWITCH.
+            sortedRecipesBkp.sort(function (a, b) {
+                if (a.name > b.name) return 1;
+                if (b.name > a.name) return -1;
+                return 0;
+            })
+        } else if (e.target.value === 'nameDes') {
+            sortedRecipesBkp.sort(function (a, b) {
+                if (a.name > b.name) return -1;
+                if (b.name > a.name) return 1;
+                return 0;
+            })
+        } else if (e.target.value === 'scoreAsc') {
+            sortedRecipesBkp.sort(function (a, b) {
+                return a.score - b.score;
+            });
+        } else if (e.target.value === 'scoreDes') {
+            sortedRecipesBkp.sort(function (a, b) {
+                return b.score - a.score;
+            });
+        }
+        dispatch(changeOrderBkp(sortedRecipesBkp))
+
     }
 
 
@@ -110,16 +139,15 @@ export default function Home() {
             <div className={s.searchOrderFilter}>
 
                 <form onSubmit={handleSubmit}>
-                    <span>SEARCH BY RECIPE: </span>
-                    <input type="text" placeholder="Write the name here!" onChange={handleChange} value={recipeName} autoComplete="off" />
+                    <span>SEARCH RECIPES: </span>
+                    <input type="text" placeholder="Write a name here!" onChange={handleChange} value={recipeName} autoComplete="off" />
                     <button type="submit">SEARCH</button>
                 </form>
 
 
                 <div className={s.order}>
                     <span>ORDER: </span>
-                    <select onChange={e => handleOrder(e)} defaultValue={"DEFAULT"} >  {/* Defino u select para ordenamiento alfabetico y por puntuación. */}
-
+                    <select onChange={e => handleOrder(e)} defaultValue={"DEFAULT"} >  {/* Defino un select para ordenamiento alfabetico y por puntuación. */}
                         <option value="DEFAULT" disabled>Select an order</option>
                         <optgroup label="Alphabetical Order">
                             <option value='nameAsc'>Ascending A ➜ Z</option>
@@ -133,16 +161,14 @@ export default function Home() {
                     </select >
                 </div>
 
-                <div className={s.filter}>
-                <span>FILTER: </span>
 
+                <div className={s.filter}>
+                    <span>FILTER: </span>
                     <select onChange={e => handleFilterRecipesByDiet(e)}>    {/* Defino un select para filtrado, con las dietas que ya se cargaron en el estado global. */}
                         <option value='All'>All</option>
                         {
                             diets && diets.map((diet, i) => {
-                                return (
-                                    <option value={diet.name} key={i}>{diet.name}</option>
-                                )
+                                return (<option value={diet.name} key={i}>{diet.name}</option>)
                             })
                         }
                     </select>
