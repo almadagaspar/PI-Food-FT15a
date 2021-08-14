@@ -70,38 +70,32 @@ export default function Home() {
 
 
 
-
-    function sortArray(arrayToSort, sortType) {  // Con esta función ordeno 'recipes' y 'recipesBkp'.
-        switch (sortType) {
-            case 'alphAsc':
-                arrayToSort.sort(function (a, b) {
-                    if (a.name > b.name) return 1;
-                    if (b.name > a.name) return -1;
-                    return 0;
-                })
-                break;
-            case 'alphDes':
-                arrayToSort.sort(function (a, b) {
-                    if (a.name > b.name) return -1;
-                    if (b.name > a.name) return 1;
-                    return 0;
-                })
-                break;
-            case 'scoreAsc':
-                arrayToSort.sort(function (a, b) {
-                    return a.score - b.score;
-                });
-                break;
-            case 'scoreDes':
-                arrayToSort.sort(function (a, b) {
-                    return b.score - a.score;
-                });
-                break;
-            default:
+    // Con esta función ordeno 'recipes' y 'recipesBkp'.
+    function sortArray(arrayToSort, sortType) {
+        // El método .sort() INVIERTE el orden de los elementos comparados si su RETURN devuelve un número POSITIVO
+        // En cuantoa a STRINGS: las letras cercanas a 'a' son menores a las cercanas a 'z'. Las letras mayúsculas son menores a las minusculas, y las números son menores a las letras ('5' < 'M').
+        if (sortType === 'alphAsc') {
+            arrayToSort.sort((a, b) => {
+                return (a.name < b.name) ? -1 : 1;
+            })
+        }
+        if (sortType === 'alphDes') {
+            arrayToSort.sort((a, b) => {
+                return (a.name > b.name) ? -1 : 1;
+            })
+        }
+        if (sortType === 'scoreAsc') {
+            arrayToSort.sort((a, b) => {
+                return a.score - b.score;
+            });
+        }
+        if (sortType === 'scoreDes') {
+            arrayToSort.sort((a, b) => {
+                return b.score - a.score;
+            });
         }
         return arrayToSort;
     }
-
 
 
 

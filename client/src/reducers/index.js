@@ -8,9 +8,9 @@ import {
 const initialState = {
   loading: true,   // El valor de este estado indica si actualmente se estan cargando recetas
   recipes: [],   // Todas las recetas cargadas para mostrar. Será modificado al aplicar filtros.
-  recipesBkp: [],   // Es una copia del estado 'recipes', y lo uso para hacer los filtrados a travez de el pero sin modificarlo. 
-  diets: [],    // Lista de las diferentes dietas a las que puede pertenecer una receta.
-  details: {},
+  recipesBkp: [],   // Es una copia del estado 'recipes', y lo uso para hacer los filtrados a travez de él pero sin modificarlo. 
+  diets: [{ name: 'lacto ovo vegetarian' }],    // Las diferentes dietas a las que puede pertenecer una receta. Le doy un valor inicial para que el select tenga desde el principio su ancho final. 
+  details: {},     // Contiene todos los detalles de la última receta seleccionada.
 };
 
 
