@@ -68,10 +68,7 @@
 }
 
 
-.loading {
-    height: 800px;
-    font-size: 30px;
-}
+
 
 
 .cards_container {
@@ -80,5 +77,30 @@
     grid-template-rows: auto auto auto ;
     justify-items: center;
     align-items: center;
+}
+
+
+
+.message {
+    margin-top: 150px;
+    grid-column-start: 2;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    color: brown;
+    font-size: 40px;
+    
+    padding: 15px;
+
+    background-color: rgb(221, 182, 131);
+    border: 5px rgba(255, 123, 0, 0.692) solid;
+    border-style:inset;
+    border-radius: 30px;
+    height: 100px;
+    width: 1000px;
 }
 

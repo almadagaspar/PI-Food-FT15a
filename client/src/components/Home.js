@@ -159,7 +159,7 @@ export default function Home() {
                 {
                     // Si se esta haciendo una busqueda o hay recetas cargadas, muesto 'loading...' o las recetas cargadas segun corresponda.
                     loading || recipes.length ?
-                        loading ? <div className={s.loading} >Loading...</div> :
+                        loading ? <div className={s.message} >LOADING...</div> :
                             currentRecipes.map((r, i) => {
                                 return (
                                     <Card key={i} id={r.id} image={r.image} name={r.name} score={r.score} diets={r.diets} />
@@ -167,8 +167,8 @@ export default function Home() {
                             })
                         // Si NO hay recetas para mostrar y NO se esta haciendo una busqueda, muestro el mensaje correspondiente
                         // segun si la razón por la cual no hay recetas es por una busqueda por nombre sin resultados, o por elegir un filtro sin resultados.  .
-                        : recipesBkp.length && !recipes.length ? <h2>THERE ARE NO RECIPES TO SHOW WITH THAT FILTER !</h2>
-                            : <h2>THERE ARE NO RECIPES WITH THAT NAME !</h2>
+                        : recipesBkp.length && !recipes.length ? <div className={s.message}>THERE ARE NO RECIPES TO SHOW WITH THAT FILTER !</div>
+                            : <div className={s.message}>THERE ARE NO RECIPES WITH THAT NAME !</div>
 
                 }
             </div>

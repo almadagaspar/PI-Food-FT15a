@@ -12,7 +12,7 @@
 
 
 .card:hover {
-    border: 4px rgba(163, 106, 0, 0.493) solid;
+    border: 4px rgba(182, 118, 0, 0.541) solid;
     background-color: rgba(238, 165, 81, 0.616);
 }
 
@@ -42,12 +42,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.363);
-    border-radius: 20px;
+    background-color: rgba(0, 0, 0, 0.295);
+    border-radius: 10px;
     font-weight:bold;
     font-size: 18px;
-    color: rgb(228, 236, 177);
-    margin: 5px 10px 10px 200px; 
+    color: rgb(240, 243, 189);
+    margin: 4px 10px 10px 203px; 
     width: 140px;
     height: 25px;
 }
@@ -55,8 +55,8 @@
 
 .diets_title{
     font-weight: bold;
-    font-size: 18px;
-    color: rgb(110, 22, 0);
+    font-size: 17px;
+    color: rgb(141, 52, 0);
 }
 
 
