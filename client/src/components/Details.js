@@ -1,4 +1,4 @@
-import Rect, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { getDetails } from '../actions/index.js'
 import NavBar from './NavBar.js';
@@ -30,30 +30,30 @@ export default function Details(props) {
                             <div className={s.upper_details}>
                                 <img src={details.image ? details.image : imageNotAvailable} alt="" />
                                 <div className={s.right_side}>
-                                    <h1>{details.name}</h1>
+                                    <div className={s.name}>{details.name}</div>
                                     <div className={s.columns}>
 
                                         <div className={s.column_1}>
-                                            <h2>Diets:</h2>
+                                            <span className={s.diets_title} >Diets:</span>
                                             {
                                                 details.diets.length ? details.diets.map((d, i) => {
-                                                    return (<h4 key={i}>{d}</h4>)
+                                                    return (<span key={i}>• {d}</span>) 
                                                 })
-                                                    : <h4> There are no diets for this recipe.</h4>
+                                                    : <span> There are no diets for this recipe.</span>
                                             }
                                         </div>
 
                                         <div className={s.column_2}>
-                                            <h4>Score: {details.score}</h4>
-                                            <h4>Health Score: {details.healthScore}</h4>
+                                            <span className={s.score}>Score: {details.score}</span>  <br/>
+                                            <span className={s.healt_score}>Health Score: {details.healthScore}</span> <br/>
 
 
-                                            <h2>Dish Types:</h2>
+                                            <span className={s.dish_types}>Dish Types:</span>
                                             {
                                                 details.dishTypes ? details.dishTypes.map((dt, i) => {
-                                                    return (<h4 key={i}>{dt}</h4>)
+                                                    return (<span className={s.dish_types} key={i}>• {dt}</span>)
                                                 }) :
-                                                    <h4>This recipe has no dish types</h4>
+                                                    <span className={s.dish_types}>This recipe has no dish types</span>
                                             }
                                         </div>
                                     </div>
@@ -62,15 +62,15 @@ export default function Details(props) {
                                 </div>
                             </div>
                             {
-                                details.summary ? <p>Summary: {details.summary.replace(/(<([^>]+)>)/ig, '')}</p>
-                                    : <p>Sumary: There are no a summary for this recipe.</p>
+                                details.summary ? <p className={s.info}>SUMMARY: {details.summary.replace(/(<([^>]+)>)/ig, '')}</p>
+                                    : <p className={s.info}>SUMMARY: There are no a summary for this recipe.</p>
                             }
                             {
-                                details.instructions ? <p>Instructions: {details.instructions.replace(/(<([^>]+)>)/ig, '')}</p>
-                                    : <p>Instructions: There are no instructions for this recipe.</p>
+                                details.instructions ? <p className={s.info}>INSTRUCTIONS: {details.instructions.replace(/(<([^>]+)>)/ig, '')}</p>
+                                    : <p className={s.info}>INSTRUCTIONS: There are no instructions for this recipe.</p>
                             }
                         </div>
-                        : <h1>Loading...</h1>
+                        : <h1 className={s.loading}>Loading...</h1>
                 }
             </fieldset>
             <Footer />

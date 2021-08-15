@@ -5,9 +5,9 @@ header {
     justify-content: space-between;
     height: 70px;
     width: 100%;
-    background-color: #907136;
+    background-color: #7e612b;
     align-items: center;
-    border-bottom: 2px rgb(139, 95, 0) solid ;
+    border-bottom: 2px rgb(95, 65, 0) solid ;
     
 }
 
@@ -25,7 +25,6 @@ header nav {
     align-items: center;
     width: 500px;
     height: 90%;
-    /* text-decoration: none; */
     
     /* border: 2px red dashed; */
 }
