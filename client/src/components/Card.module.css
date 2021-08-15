@@ -8,6 +8,7 @@
     font-size: 15px;
     background-color: rgba(190, 121, 41, 0.616);
     margin-bottom: 41px;
+    text-decoration: none;
 }
 
 
@@ -30,6 +31,8 @@
     border: 3px rgba(0, 0, 0, 0.76) solid;
     border-radius: 15px;
     margin: 3px 10px 3px 4px;
+    box-shadow: 5px 7px 7px rgba(0, 0, 0, 0.212) ;
+
 }
 
 .right_side {
@@ -70,7 +73,6 @@
     font-weight:bold;
     font-size: 15px;
     color: rgb(70, 48, 0);
-
 }
 
 
@@ -88,3 +90,4 @@
     font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     color: rgb(78, 22, 0);
 }
+

@@ -1,0 +1,77 @@
+.details {
+    background-image: url("../imgs/home_background.jpg");
+    background-size:auto;
+    height: 945px;
+}
+
+
+.details fieldset {
+    border-radius: 35px;
+    border: 3px rgb(160, 42, 42) solid;
+    margin:  20px 25px 10px 25px;
+    height: 780px;
+
+}
+
+.details legend {
+    width: 400px;
+    font-size: 42px;
+    font-weight: bold;
+    text-align: center;
+    color: rgb(139, 40, 0);
+    text-shadow: 8px 8px 5px rgba(124, 45, 0, 0.247);
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+.upper_details {
+    display: flex;
+    flex-direction: row;
+    border: 4px rgba(37, 21, 0, 0.808) solid;
+    width: 100%;
+    height: 380px;
+}
+
+
+.upper_details img {
+    border-radius: 35px;
+    border: 4px rgba(37, 21, 0, 0.808) solid;
+    margin-left: 10px;
+    box-shadow: 8px 8px 10px rgba(0, 0, 0, 0.226) ;
+
+}
+
+
+.right_side {
+    border: 4px rgba(0, 226, 38, 0.808) solid;
+    width: 100%;
+    height: 100%;
+}
+
+.right_side h1{
+    font-size: 40px;
+    color: rgb(161, 84, 39);
+    margin: 10px;
+}
+
+.columns {
+    display: flex;
+    flex-direction: row;
+    
+    
+    border: 4px rgba(185, 0, 0, 0.808) solid;
+    width: 100%;
+    height: 80%;
+    
+}
+
+.column_1 {
+    border: 4px rgba(0, 136, 226, 0.808) solid;
+    width: 50%;
+    height: 100%;
+}
+
+.column_2 {
+    border: 4px rgba(218, 0, 226, 0.808) solid;
+    width: 50%;
+    height: 100%;
+}

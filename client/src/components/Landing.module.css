@@ -15,16 +15,16 @@
 
     position: fixed;
     top: 280px;
-    right: 170px;
+    right: 220px;
 }
 
 .titleAndButton img {
-    width: 600px;
+    width: 700px;
 }
 
 .titleAndButton button {
     color: rgb(161, 97, 0);
-    border: 3px solid rgba(163, 139, 102, 0.63);
+    border: 2px solid rgba(163, 139, 102, 0.63);
     width: 200px;
     height: 70px;
     background-color: rgb(255, 241, 196);
@@ -36,13 +36,12 @@
 }
 
 .titleAndButton button:hover {
-    border: 4px solid rgb(167, 135, 87);
-    background-color: rgb(255, 229, 142);
+    border: 3px solid rgb(167, 135, 87);
+    background-color: rgb(255, 222, 113);
     font-size: 36px;
 }
 
 
-/* EJEMPLOS
+/* EJEMPLOS PARA DOS ESTILOS:
  <div className={`${s.producto} ${s.hola}`}>
- <h3 className={s.hola}>{props.title}</h3> 
  */

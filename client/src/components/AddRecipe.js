@@ -111,7 +111,6 @@ export default function AddRecipe() {
                             )
                         })
                     }
-                    {/* {console.log('diets: ', input.diets)} */}
 
                 </fieldset>
                 <button type="submit">CREATE RECIPE!</button>

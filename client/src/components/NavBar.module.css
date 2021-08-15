@@ -25,7 +25,7 @@ header nav {
     align-items: center;
     width: 500px;
     height: 90%;
-    text-decoration: none;
+    /* text-decoration: none; */
     
     /* border: 2px red dashed; */
 }
