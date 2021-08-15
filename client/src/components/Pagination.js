@@ -10,15 +10,11 @@ export default function Pagination({ recipesPerPage, recipes, paginado }) {
 
     return (
         <div className={s.pagination}>
-            {/* <ul> */}
-                {pageNumbers &&
-                    pageNumbers.map((number,i) => (
-                        // <li key={number}>
-                            <span key={number} onClick={() => paginado(number) }>{number}</span>
-                        /* </li> */
-                    ))
-                }
-            {/* </ul> */}
+            {pageNumbers &&
+                pageNumbers.map((number, i) => (
+                    <span key={number} onClick={() => paginado(number)}>{number}</span>
+                ))
+            }
         </div>
     )
 }
