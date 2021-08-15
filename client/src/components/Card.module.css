@@ -1,19 +1,19 @@
-body {
-    /* Anulo los margenes por defecto que usan los navegadores web. */    
-      
-    }
-    
-
 
 .card {
-
-    border: 3px rgba(0, 0, 0, 0.212) solid;
-    width: 550px;
+    border: 4px rgba(0, 0, 0, 0.329) solid;
+    width: 580px;
     height: 200px;
-    border-radius: 12px;    
+    border-radius: 15px;
     color:black;
     font-size: 15px;
-    background-color: rgba(221, 118, 0, 0.657);
+    background-color: rgba(190, 121, 41, 0.616);
+    margin-bottom: 41px;
+}
+
+
+.card:hover {
+    border: 4px rgba(163, 106, 0, 0.493) solid;
+    background-color: rgba(238, 165, 81, 0.616);
 }
 
 
@@ -25,11 +25,11 @@ body {
     width: 100%;
 }
 
-.card img {
+.upper_details img {
     width: 210px;
-    border: 3px rgba(0, 0, 0, 0.315) solid;
-    border-radius: 12px;
-    margin: 3px;
+    border: 3px rgba(0, 0, 0, 0.76) solid;
+    border-radius: 15px;
+    margin: 3px 10px 3px 4px;
 }
 
 .right_side {
@@ -38,14 +38,53 @@ body {
     height: 100%;
 }
 
-.right_side .diets{
+.score {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.363);
+    border-radius: 20px;
+    font-weight:bold;
+    font-size: 18px;
+    color: rgb(228, 236, 177);
+    margin: 5px 10px 10px 200px; 
+    width: 140px;
+    height: 25px;
+}
+
+
+.diets_title{
+    font-weight: bold;
+    font-size: 18px;
+    color: rgb(110, 22, 0);
+}
+
+
+.diets{
     display:flex;
     flex-direction: column;
     align-items: flex-start;
     flex-wrap: wrap;
     /* border: 2px yellow solid; */
-    height: 120px;
-    list-style-type: none;
+    height: 100px;
+    font-weight:bold;
+    font-size: 15px;
+    color: rgb(70, 48, 0);
+
 }
 
 
+
+.name {
+    margin: 6px 5px 5px 9px; 
+    font-size: 27px;
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    color: rgb(78, 22, 0);
+}
+
+.name_long {
+    margin: 9px 5px 5px 9px; 
+    font-size: 20px;
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    color: rgb(78, 22, 0);
+}

@@ -11,20 +11,23 @@ export default function Card({ id, image, name, score, diets }) {  // Accedo med
           <img src={image ? image : imageNotAvailable} alt="" />
         </Link>
         <div className={s.right_side}>
-          <div>Score: {score}</div>
-          <div>Diets: </div>
-          <div className={s.diets}>  
+          <div className={s.score}>Score: {score}</div>
+          <div className={s.diets_title}>Diets:</div>
+          <div className={s.diets}>
             {
-              diets && diets.map((d, i) => {        /* Muestro todos las dietas de la receta */
+              diets.length ? diets.map((d, i) => {        /* Muestro todos las dietas de la receta */
                 return (
                   <span key={i}>• {d}</span>
                 )
               })
+                : <span>There are no diets to show.</span>
             }
           </div>
         </div>
       </div>
-      <span>{name}</span>
+      <div className={name.length < 50 ? s.name : s.name_long}>{name}</div>
+
+
     </div>
   );
 }

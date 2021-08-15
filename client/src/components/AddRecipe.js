@@ -100,7 +100,7 @@ export default function AddRecipe() {
                     <textarea rows="10" cols="30" value={input.instructions} name="instructions" onChange={e => handleChange(e)} />
                 </div>
                 <fieldset>
-                    <legend>Personalia:</legend>
+                    <legend>Diets:</legend>
                     {
                         diets && diets.map((diet, i) => {
                             return (
