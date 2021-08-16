@@ -17,11 +17,11 @@
 }
 
 .add_recipe legend {
-    width: 250px;
+    width: 200px;
     font-size: 30px;
     font-weight: bold;
     text-align: center;
-    color: rgb(240, 194, 95);
+    color: rgb(236, 165, 84);
 }
 
 
@@ -32,7 +32,6 @@
     width: 100%;
     
     /* border: 3px red solid; */
-
 }
 
 
@@ -46,7 +45,7 @@
 
 
 .add_recipe .info label{
-    color:  rgb(255, 226, 96);
+    color:  rgb(255, 213, 96);
 
     margin-top: 10px ;
     font-size: 20px;
@@ -56,7 +55,7 @@
 .add_recipe .info input {
   width: 500px;
   height: 30px;
-  font-size: 22px;
+  font-size: 20px;
   border-radius: 10px;
   padding-left: 10px;
   background-color: rgb(250, 238, 211);
@@ -70,22 +69,33 @@
 .add_recipe .info textarea {
     width: 800px;
     height: 70px;
-
-    font-size: 22px;
+    font-size: 20px;
     border-radius: 10px;
     padding-left: 10px;
     background-color: rgb(250, 238, 211);
-
+    resize: none;
 }
 
 
 .add_recipe .diets {
-    position: relative;
     border-radius: 35px;
-    border: 3px green solid;
-    margin:  0px 0px 0px 0px;
-    height: 80%;
-    width: 30%;
+    border: 2px rgb(136, 68, 48) solid;
+    margin-top:  10px ;
+    height: 73%;
+    width: 23%;
+
+    padding: 35px 0px 0px 20px;
+    font-size: 22px;
+    color:  rgb(255, 213, 96);
+
+}
+
+
+.add_recipe .diets input[type=checkbox] {
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+    background-color: lawngreen;
 }
 
 
@@ -99,9 +109,9 @@
     border-radius: 17px;
     font-size: 25px;
     font-weight: bold;
-    color: rgb(78, 37, 9);
-    border: 3px rgba(141, 86, 61, 0.822) solid;
-    background-color: rgb(206, 151, 100);
+    color: rgb(65, 30, 7);
+    border: 3px rgba(175, 102, 68, 0.822) solid;
+    background-color: rgb(202, 158, 116);
 }
 
 

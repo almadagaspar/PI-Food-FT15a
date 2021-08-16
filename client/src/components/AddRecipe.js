@@ -4,12 +4,12 @@ import { addRecipe } from '../actions/index.js';
 import { useDispatch, useSelector } from 'react-redux';
 import s from "./AddRecipe.module.css"
 import Footer from './Footer.js';
-
+import { useHistory } from 'react-router-dom';
 
 export default function AddRecipe() {
     const dispatch = useDispatch();
     const diets = useSelector(state => state.diets)
-
+    const history = useHistory()
 
     const [input, setInput] = useState({
         name: "",
@@ -72,15 +72,9 @@ export default function AddRecipe() {
 
         // console.dir(input)
         dispatch(addRecipe(input));
-        alert('Recipe created!');
-        setInput({
-            name: "",
-            summary: "",
-            score: 1,
-            healthScore: 1,
-            instructions: "",
-            diets: []
-        })
+        alert('RECIPE CREATED!');
+        alert('You will be redirected to the HOME page.');
+        history.push('/home')
     }
 
 
@@ -101,15 +95,15 @@ export default function AddRecipe() {
                         <input type='number' value={input.healthScore} name='healthScore' onChange={e => handleChange(e)} />
 
                         <label>Summary: *</label>
-                        <textarea /* rows="5" cols="1" */ value={input.summary} name="summary" onChange={e => handleChange(e)} />
+                        <textarea value={input.summary} name="summary" onChange={e => handleChange(e)} />
 
                         <label>Instructions:</label>
-                        <textarea /* rows="5" cols="1" */ value={input.instructions} name="instructions" onChange={e => handleChange(e)} />
+                        <textarea value={input.instructions} name="instructions" onChange={e => handleChange(e)} />
                         <button type="submit">CREATE</button>
 
                     </div>
                     <div className={s.diets}>
-                        <span>Diets:</span>
+                        <label>Diets:</label>
                         {
                             diets && diets.map((diet, i) => {
                                 return (
