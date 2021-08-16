@@ -28,7 +28,13 @@ async function loadDietsInDb() {
         })
     }
 };
-// loadDietsInDb();    // Descomentar si necesito que se vuelvan a cargar las dietas en mi DB. Antes poner:   conn.sync({ force: false })  en true.
+// loadDietsInDb();    
+// Descomentar esta linea si necesito que se vuelvan a cargar las dietas en mi DB.
+// 1) Poner conn.sync({ force: false })  en true.
+// 2) Descometar la linea y levantar el Front y el Back Antes poner:   
+// 3) Regresar conn.sync({ force: false })  a false.
+// 4) Bajar y volver a levantar el Front y el Back.
+// 2) Comentar nuevamente esta linea para que no se ejecute innecesariamente.
 
 
 

@@ -29,7 +29,7 @@ router.get('/', async (req, res) => {
 
         let apiRecipes = []
         try {
-            apiRecipes = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=30&query=${req.query.name}`)
+            apiRecipes = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=4&query=${req.query.name}`)
         } catch (error) {
             console.log("Se genero un error en el back al buscar por nombre", error)
         }
@@ -71,7 +71,7 @@ router.get('/', async (req, res) => {
 
 
         // Para obtener mayor información sobre las recetas, como por ejemplo el tipo de dieta, agrego el flag: &addRecipeInformation=true
-        const recipesAPI = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=30`)
+        const recipesAPI = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=4`)
 
         const recipesToSend = recipesAPI.data.results.map(recipe => {
             // Las dietas a las que pertenece cada receta estan en dos lugares distintos, por lo que tengo que unirlas pero evitando que se repitan.

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import NavBar from './NavBar.js';
 import { addRecipe } from '../actions/index.js';
 import { useDispatch, useSelector } from 'react-redux';
+import s from "./AddRecipe.module.css"
+import Footer from './Footer.js';
 
 
 export default function AddRecipe() {
@@ -30,7 +32,7 @@ export default function AddRecipe() {
                 break;
             default:
         }
-        console.log(e.target.name + ':' + e.target.value);
+        // console.log(e.target.name + ':' + e.target.value);
 
         setInput({
             ...input,
@@ -68,7 +70,7 @@ export default function AddRecipe() {
             return;
         }
 
-        console.dir(input)
+        // console.dir(input)
         dispatch(addRecipe(input));
         alert('Recipe created!');
         setInput({
@@ -83,48 +85,53 @@ export default function AddRecipe() {
 
 
     return (
-        <div>
+        <div className={s.add_recipe}>
             <NavBar />
-            <h1>Add Recipe</h1>
-            <form onSubmit={e => handleSubmit(e)} >
-                <div>
-                    <label>Name:</label>
-                    <input type='text' value={input.name} name='name' autoComplete="off" onChange={e => handleChange(e)} /* required */ />
-                </div>
-                <div>
-                    <label>Score:</label>
-                    <input type='number' value={input.score} name='score' onChange={e => handleChange(e)} />
-                </div>
-                <div>
-                    <label>Health score:</label>
-                    <input type='number' value={input.healthScore} name='healthScore' onChange={e => handleChange(e)} />
-                </div>
-                <div>
-                    <label>Summary:</label>
-                    <textarea rows="10" cols="30" value={input.summary} name="summary" onChange={e => handleChange(e)} /* required */ />
-                </div>
-                <div>
-                    <label>Instructions:</label>
-                    <textarea rows="10" cols="30" value={input.instructions} name="instructions" onChange={e => handleChange(e)} />
-                </div>
-                
-                <fieldset>
-                    <legend>Diets:</legend>
-                    {
-                        diets && diets.map((diet, i) => {
-                            return (
-                                <div key={i}>
-                                    <input type="checkbox" name={diet.name} value={diet.id} onChange={e => handleCheckBox(e)} />
-                                    <label>{diet.name}</label><br />
-                                </div>
-                            )
-                        })
-                    }
+            <fieldset>
+                <legend>Add Recipe</legend>
+                <form onSubmit={e => handleSubmit(e)} className={s.form}>
+                    <div className={s.info}>
+                        <div>
+                            <label>Name:</label>
+                            <input type='text' value={input.name} name='name' autoComplete="off" onChange={e => handleChange(e)} /* required */ />
+                        </div>
+                        <div>
+                            <label>Score:</label>
+                            <input type='number' value={input.score} name='score' onChange={e => handleChange(e)} />
+                        </div>
+                        <div>
+                            <label>Health score:</label>
+                            <input type='number' value={input.healthScore} name='healthScore' onChange={e => handleChange(e)} />
+                        </div>
+                        <div>
+                            <label>Summary:</label>
+                            <textarea rows="10" cols="30" value={input.summary} name="summary" onChange={e => handleChange(e)} /* required */ />
+                        </div>
+                        <div>
+                            <label>Instructions:</label>
+                            <textarea rows="10" cols="30" value={input.instructions} name="instructions" onChange={e => handleChange(e)} />
+                        </div>
+                    <button type="submit">CREATE RECIPE!</button>
 
-                </fieldset>
-                <button type="submit">CREATE RECIPE!</button>
+                    </div>
+                    <div className={s.diets}>
+                        <span>Diets:</span>
+                        {
+                            diets && diets.map((diet, i) => {
+                                return (
+                                    <div key={i}>
+                                        <input type="checkbox" name={diet.name} value={diet.id} onChange={e => handleCheckBox(e)} />
+                                        <label>{diet.name}</label><br />
+                                    </div>
+                                )
+                            })
+                        }
 
-            </form>
+                    </div>
+
+                </form>
+            </fieldset>
+            <Footer />
         </div>
     );
 }
