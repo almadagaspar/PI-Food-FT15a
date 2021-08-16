@@ -22,27 +22,31 @@ export default function Home() {
 
 
     // PAGINADO:
-    const [currentPage, setCurrentPage] = useState(1);
-    const [recipesPerPage, setRecipesPerPage] = useState(9);   // ¿ PUEDE SER UNA COSNTANTE EN LUGAR DE UN ESTADO LOCAL?
-    const indexOfLastRecipe = currentPage * recipesPerPage;
-    const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage;
-    const currentRecipes = recipes.slice(indexOfFirstRecipe, indexOfLastRecipe);
+    const [currentPage, setCurrentPage] = useState(1);  // Numero de la pagina cuyas recetas se estan mostrando actualmente.
+    // const [recipesPerPage, setRecipesPerPage] = useState(9);   // ¿ PUEDE SER UNA COSNTANTE EN LUGAR DE UN ESTADO LOCAL?
+    const recipesPerPage = 9;   // Cantidad máxima de recetas que se mostrarán en una página.  
+    
+    const indexOfLastRecipe = currentPage * recipesPerPage;     // 'indexOfLastRecipe' es la primera receta de la siguente página.
+    const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage;      // 'indexOfFirstRecipe' es la primer receta de la pagina actual. 
+    const currentRecipes = recipes.slice(indexOfFirstRecipe, indexOfLastRecipe);     // 'currentRecipes' son las recetas que pertenecen a la pagina actual.
 
-    const paginado = (pageNumber) => {
+    const paginado = (pageNumber) => {  // Función que cambia la página que debe mostrarse.
         setCurrentPage(pageNumber)
     }
 
+    //   [  * {.} {.} {.} {.} {.} {.} {.} {.} {.} * {.} {.} {.} {.} {.} {.} {.} {.} {.} * {.} {.} {.} ]
+
 
     useEffect(() => {        // Hago una carga inicial de recetas solo la primera vez que se ingresa a esta página. 
-        const LoadRecipes = async function () {
+        async function loadRecipes() {
             if (loading) {         // Si es la primera vez que entro al Home...
                 await dispatch(getRecipes())     // Realizo una carga inicial de videojuegos. Los 'await' son para que no se cambie el stado de 'loading' antes de tienpo.
                 await dispatch(getDiets())     // Realizo la carga de los diferentes tipos de dietas.
-                dispatch(changeLoadingState())     // 'loading' comienza en true, pero tras la carga inicial de recetas debo cambiarlo a false.
+                dispatch(changeLoadingState(false))     // 'loading' comienza en true, pero tras la carga inicial de recetas debo cambiarlo a false.
             }
         };
-        LoadRecipes();
-    }, [dispatch]);  // No agrego 'loading' aunque el warning me lo indica, porque de esa forma las busquedas arrojan recetas equivocadas.
+        loadRecipes();
+    }, [dispatch]);  // NO agrego 'loading' aunque el warning me lo indica, porque de esa forma las busquedas arrojan recetas equivocadas.
 
 
 
@@ -55,10 +59,10 @@ export default function Home() {
     async function handleSubmit(e) {  // Se ejecutará al presionarse sobre el boton 'Buscar' (o Enter) del input de Buscar por nombre.
         e.preventDefault();
         if (!loading) {     // Desactivo el boton buscar mientras se esta haciendo una busqueda.
-            dispatch(changeLoadingState());          // Esta por comenzar una busqueda, por lo que cambio es estado de 'loading' a true.
+            dispatch(changeLoadingState(true));          // Esta por comenzar una busqueda, por lo que cambio es estado de 'loading' a true.
             await dispatch(getRecipesByName(recipeName));   // Envio al reducer la action de busqueda por nombre. Evito con en 'await' que se lea la linea siguiente antes de tiempo.
             setCurrentPage(1);
-            dispatch(changeLoadingState());         // Acaba de terminar una busqueda, por lo que cambio es estado de 'loading' a false.
+            dispatch(changeLoadingState(false));         // Acaba de terminar una busqueda, por lo que cambio es estado de 'loading' a false.
         }
     }
 
@@ -76,10 +80,10 @@ export default function Home() {
         // El método .sort() INVIERTE el orden de los elementos comparados si su RETURN devuelve un número POSITIVO
         // En cuantoa a STRINGS: las letras cercanas a 'a' son menores a las cercanas a 'z'. Las letras mayúsculas son menores a las minusculas, y las números son menores a las letras ('5' < 'M').
         if (sortType === 'alphAsc') {
-            arrayToSort.sort((a, b) => { return (a.name < b.name) ? -1 : 1; });
+            arrayToSort.sort((a, b) => { return (a.name.toLowerCase() < b.name.toLowerCase()) ? -1 : 1; });  // Lemon
         };
         if (sortType === 'alphDes') {
-            arrayToSort.sort((a, b) => { return (a.name > b.name) ? -1 : 1; });
+            arrayToSort.sort((a, b) => { return (a.name.toLowerCase() > b.name.toLowerCase()) ? -1 : 1; });
         };
         if (sortType === 'scoreAsc') {
             arrayToSort.sort((a, b) => { return a.score - b.score; });

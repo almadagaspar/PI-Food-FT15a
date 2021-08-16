@@ -1,6 +1,7 @@
 .home {   
     background-image: url("../imgs/home_background.jpg");
     background-size:auto;
+    /* background-size:cover; */
     height: 945px;
 }
 

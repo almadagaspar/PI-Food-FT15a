@@ -65,7 +65,7 @@ export function getDetails(id) {
   return async function (dispatch) {
     try {
       let resp = await axios.get('http://localhost:3001/recipe/' + id);
-       dispatch({
+      dispatch({
         type: GET_DETAILS,
         payload: resp.data
       })
@@ -85,32 +85,46 @@ export function addRecipe(payload) {
 
 
 
-export function changeLoadingState() {   // Para invertir el valor del estado 'loading'.
-  return {
-    type: CHANGE_LOADING_STATE,
+export function changeLoadingState(payload) {   // Para invertir el valor del estado 'loading'.
+  return async function (dispatch) {
+    dispatch({
+      type: CHANGE_LOADING_STATE,
+      payload
+    })
   };
 }
 
 
 export function filterRecipesByDiet(payload) {
-  return {
-    type: 'FILTER_RECIPES_BY_DIET',
-    payload
+  return async function (dispatch) {
+    dispatch({
+      type: 'FILTER_RECIPES_BY_DIET',
+      payload
+    })
   }
 }
 
 
 export function changeOrder(payload) {
-  return {
-    type: CHANGE_ORDER,
-    payload
+  return async function (dispatch) {
+    dispatch({
+      type: CHANGE_ORDER,
+      payload
+    })
   }
 }
 
 
 export function changeOrderBkp(payload) {
-  return {
-    type: CHANGE_ORDER_BKP,
-    payload
+  return async function (dispatch) {
+    dispatch({
+      type: CHANGE_ORDER_BKP,
+      payload
+    })
   }
 }
+
+
+
+
+

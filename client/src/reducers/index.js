@@ -43,7 +43,8 @@ export default function reducer(state = initialState, action) {
     case CHANGE_LOADING_STATE:
       return {
         ...state,
-        loading: !state.loading
+        loading: action.payload
+
       }
 
 

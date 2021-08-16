@@ -7,7 +7,7 @@ function Landing() {
     return (
         <div className={s.landing}>
             <div className={s.titleAndButton}>
-                <img src={food} />
+                <img src={food}  alt=""/>
                 <Link to='/home'>
                     <button> ENTER </button>
                 </Link>

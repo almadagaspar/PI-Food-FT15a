@@ -13,9 +13,12 @@ export default function Details(props) {
     const dispatch = useDispatch();
     const [loading, setloading] = useState(true);  // Creo un estado local para almacenar dinamicamente el contenido del input con el nombre de la receta a buscar.
 
-    useEffect(async () => {
-        await dispatch(getDetails(props.match.params.id));   // Accedo a los detalles de la receta clickeada.
-        setloading(false)
+    useEffect( () => {
+        async function loadDetails() {
+            await dispatch(getDetails(props.match.params.id));   // Accedo a los detalles de la receta clickeada.
+            setloading(false)
+        }
+        loadDetails()
     }, [dispatch, props.match.params.id])
 
 
@@ -37,15 +40,15 @@ export default function Details(props) {
                                             <span className={s.diets_title} >Diets:</span>
                                             {
                                                 details.diets.length ? details.diets.map((d, i) => {
-                                                    return (<span key={i}>• {d}</span>) 
+                                                    return (<span key={i}>• {d}</span>)
                                                 })
                                                     : <span> There are no diets for this recipe.</span>
                                             }
                                         </div>
 
                                         <div className={s.column_2}>
-                                            <span className={s.score}>Score: {details.score}</span>  <br/>
-                                            <span className={s.healt_score}>Health Score: {details.healthScore}</span> <br/>
+                                            <span className={s.score}>Score: {details.score}</span>  <br />
+                                            <span className={s.healt_score}>Health Score: {details.healthScore}</span> <br />
 
 
                                             <span className={s.dish_types}>Dish Types:</span>

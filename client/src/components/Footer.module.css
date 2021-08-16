@@ -9,8 +9,8 @@ footer {
     align-items: center;
 }
 
-footer span {
+.text {
   margin-right: 40px;
   color: rgba(255, 231, 200, 0.795);
-  font-size: 15px;
+  font-size: 14px;
 }
