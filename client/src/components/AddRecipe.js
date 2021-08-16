@@ -11,16 +11,16 @@ export default function AddRecipe() {
 
     const [input, setInput] = useState({
         name: "",
-        summary: "",
         score: 1,
         healthScore: 1,
+        summary: "",
         instructions: "",
         diets: []
     })
 
 
     function handleChange(e) {  // Para manejar los inputs del tipo: text, number y textarea.
-        // console.log(e.target.name + ': ', e.target.value);
+
         switch (e.target.name) {   // Validacion para los campos 'score' y 'healthScore'
             case 'score':
             case 'healthScore':
@@ -30,13 +30,12 @@ export default function AddRecipe() {
                 break;
             default:
         }
+        console.log(e.target.name + ':' + e.target.value);
 
         setInput({
             ...input,
             [e.target.name]: e.target.value
-
         })
-
     }
 
 
@@ -58,20 +57,29 @@ export default function AddRecipe() {
 
     function handleSubmit(e) {   // Para controlar el boton de creación de una nueva receta.
         e.preventDefault();
-        console.log(input)
+
+        if (input.name.trim() === '') {
+            alert('The field "name" is required!');
+            return;
+        }
+
+        if (input.summary.trim() === '') {
+            alert('The field "summary" is required!');
+            return;
+        }
+
+        console.dir(input)
         dispatch(addRecipe(input));
         alert('Recipe created!');
         setInput({
             name: "",
             summary: "",
-            score: 0,
-            healthScore: 0,
+            score: 1,
+            healthScore: 1,
             instructions: "",
             diets: []
         })
     }
-
-
 
 
     return (
@@ -81,7 +89,7 @@ export default function AddRecipe() {
             <form onSubmit={e => handleSubmit(e)} >
                 <div>
                     <label>Name:</label>
-                    <input type='text' value={input.name} name='name' autoComplete="off" onChange={e => handleChange(e)} required />
+                    <input type='text' value={input.name} name='name' autoComplete="off" onChange={e => handleChange(e)} /* required */ />
                 </div>
                 <div>
                     <label>Score:</label>
@@ -93,12 +101,13 @@ export default function AddRecipe() {
                 </div>
                 <div>
                     <label>Summary:</label>
-                    <textarea rows="10" cols="30" value={input.summary} name="summary" onChange={e => handleChange(e)} required />
+                    <textarea rows="10" cols="30" value={input.summary} name="summary" onChange={e => handleChange(e)} /* required */ />
                 </div>
                 <div>
                     <label>Instructions:</label>
                     <textarea rows="10" cols="30" value={input.instructions} name="instructions" onChange={e => handleChange(e)} />
                 </div>
+                
                 <fieldset>
                     <legend>Diets:</legend>
                     {

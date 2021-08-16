@@ -83,9 +83,7 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {     // Creo una receta en mi base de datos, con los datos que llegan desde el Front, enviados por body.
     const { name, summary, score, healthScore, instructions, diets } = req.body;    // Tomo del body la información que necesito para crear la nueva receta.
 
-    // Agrego a la tabla 'recipes' una nueva receta. En este caso NO es necesario
-    // enviar un valor para el campo 'createdInDb' ya que se autocompleta automaticamente en 'true'.
-    const newRecipe = await Recipe.create({
+    const newRecipe = await Recipe.create({       // Agrego a la tabla 'recipes' una nueva receta.
         name: name,
         summary: summary,
         score: score,
@@ -95,7 +93,6 @@ router.post('/', async (req, res) => {     // Creo una receta en mi base de dato
 
     await newRecipe.addDiets(diets);     // Agrego en la tabla intermedia 'recipe_diet' un registro (recipeId y dietID) por cada dieta a la que pertenece esta nueva receta.
     res.json(newRecipe)     // Respondo con toda la información de la nueva receta creada en la DB.
-
 })
 
 
