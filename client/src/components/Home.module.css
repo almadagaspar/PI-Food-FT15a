@@ -1,7 +1,6 @@
 .home {   
     background-image: url("../imgs/home_background.jpg");
     background-size:auto;
-    /* background-size:cover; */
     height: 945px;
 }
 
@@ -49,7 +48,6 @@
 
 
 
-
 /* ORDER */
 .order select{
     background-color: rgb(241, 230, 210);
@@ -66,8 +64,6 @@
     height: 30px;
     font-size: 20px;
 }
-
-
 
 
 

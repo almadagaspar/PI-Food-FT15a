@@ -91,27 +91,21 @@ export default function AddRecipe() {
                 <legend>Add Recipe</legend>
                 <form onSubmit={e => handleSubmit(e)} className={s.form}>
                     <div className={s.info}>
-                        <div>
-                            <label>Name:</label>
-                            <input type='text' value={input.name} name='name' autoComplete="off" onChange={e => handleChange(e)} /* required */ />
-                        </div>
-                        <div>
-                            <label>Score:</label>
-                            <input type='number' value={input.score} name='score' onChange={e => handleChange(e)} />
-                        </div>
-                        <div>
-                            <label>Health score:</label>
-                            <input type='number' value={input.healthScore} name='healthScore' onChange={e => handleChange(e)} />
-                        </div>
-                        <div>
-                            <label>Summary:</label>
-                            <textarea rows="10" cols="30" value={input.summary} name="summary" onChange={e => handleChange(e)} /* required */ />
-                        </div>
-                        <div>
-                            <label>Instructions:</label>
-                            <textarea rows="10" cols="30" value={input.instructions} name="instructions" onChange={e => handleChange(e)} />
-                        </div>
-                    <button type="submit">CREATE RECIPE!</button>
+                        <label>Name: *</label>
+                        <input type='text' value={input.name} name='name' autoComplete="off" onChange={e => handleChange(e)} /* required */ />
+
+                        <label>Score:</label>
+                        <input type='number' value={input.score} name='score' onChange={e => handleChange(e)} />
+
+                        <label>Health score:</label>
+                        <input type='number' value={input.healthScore} name='healthScore' onChange={e => handleChange(e)} />
+
+                        <label>Summary: *</label>
+                        <textarea /* rows="5" cols="1" */ value={input.summary} name="summary" onChange={e => handleChange(e)} />
+
+                        <label>Instructions:</label>
+                        <textarea /* rows="5" cols="1" */ value={input.instructions} name="instructions" onChange={e => handleChange(e)} />
+                        <button type="submit">CREATE</button>
 
                     </div>
                     <div className={s.diets}>
@@ -131,6 +125,7 @@ export default function AddRecipe() {
 
                 </form>
             </fieldset>
+            <span className={s.message}>(*) These fields are required.</span>
             <Footer />
         </div>
     );
