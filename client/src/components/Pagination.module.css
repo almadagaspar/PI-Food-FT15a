@@ -28,3 +28,14 @@
     font-size: 21px;
     color: rgb(255, 254, 220);
 }
+
+
+.pagination .current_page {
+    font-size: 21px;
+    color: rgb(255, 19, 19)
+}
+
+.pagination .current_page:hover {
+    font-size: 21px;
+    color: rgb(255, 19, 19)
+}

@@ -22,19 +22,17 @@ export default function Home() {
 
 
     // PAGINADO:
+    const recipesPerPage = 9;                   // Cantidad máxima de recetas que se mostrarán en una página.  
     const [currentPage, setCurrentPage] = useState(1);  // Numero de la pagina cuyas recetas se estan mostrando actualmente.
-    // const [recipesPerPage, setRecipesPerPage] = useState(9);   // ¿ PUEDE SER UNA COSNTANTE EN LUGAR DE UN ESTADO LOCAL?
-    const recipesPerPage = 9;   // Cantidad máxima de recetas que se mostrarán en una página.  
-    
-    const indexOfLastRecipe = currentPage * recipesPerPage;     // 'indexOfLastRecipe' es la primera receta de la siguente página.
-    const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage;      // 'indexOfFirstRecipe' es la primer receta de la pagina actual. 
-    const currentRecipes = recipes.slice(indexOfFirstRecipe, indexOfLastRecipe);     // 'currentRecipes' son las recetas que pertenecen a la pagina actual.
+    const firstRecipeNextPage = currentPage * recipesPerPage;      // 'firstRecipeNextPage' es el indice de la primer receta de la siguente página.
+    const firstRecipe = firstRecipeNextPage - recipesPerPage;      // 'firstRecipe' es el indice de la primer receta de la pagina actual. 
+    const currentRecipes = recipes.slice(firstRecipe, firstRecipeNextPage);     // 'currentRecipes' son las recetas que se renderizaran en la pagina actual.
 
     const paginado = (pageNumber) => {  // Función que cambia la página que debe mostrarse.
         setCurrentPage(pageNumber)
     }
 
-    //   [  * {.} {.} {.} {.} {.} {.} {.} {.} {.} * {.} {.} {.} {.} {.} {.} {.} {.} {.} * {.} {.} {.} ]
+
 
 
     useEffect(() => {        // Hago una carga inicial de recetas solo la primera vez que se ingresa a esta página. 
@@ -157,7 +155,7 @@ export default function Home() {
                 </div>
             </div>
 
-            <Pagination recipesPerPage={recipesPerPage} recipes={recipes.length} paginado={paginado} />
+            <Pagination recipesPerPage={recipesPerPage} recipes={recipes.length} paginado={paginado} currentPage={currentPage}/>
 
             <div className={s.cards_container}>
                 {
