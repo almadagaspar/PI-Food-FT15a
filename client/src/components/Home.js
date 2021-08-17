@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 // Importo las Action.
@@ -14,10 +14,14 @@ import s from "./Home.module.css"
 
 export default function Home() {
     const dispatch = useDispatch();  // Creo una instancia de useDispatch para usar posteriormente despachar actions al reducer.
+    
     const loading = useSelector(state => state.loading)  // Accedo al estado global 'loading'.
     const recipes = useSelector(state => state.recipes)  // Accedo al estado global 'recipes'.
     const recipesBkp = useSelector(state => state.recipesBkp)  // Accedo al estado global 'recipesBkp'.
     const diets = useSelector(state => state.diets)  // Accedo al estado global 'diets'.
+    const orderRef = useRef(null);
+    const filterRef = useRef(null);
+
     const [recipeName, setRecipeName] = useState("");  // Creo un estado local para almacenar dinamicamente el contenido del input con el nombre de la receta a buscar.
 
 
@@ -56,10 +60,12 @@ export default function Home() {
 
     async function handleSubmit(e) {  // Se ejecutará al presionarse sobre el boton 'Buscar' (o Enter) del input de Buscar por nombre.
         e.preventDefault();
-        if (!loading) {     // Desactivo el boton buscar mientras se esta haciendo una busqueda.
+        if (!loading) {         // Desactivo el boton buscar mientras se esta haciendo una busqueda.
             dispatch(changeLoadingState(true));          // Esta por comenzar una busqueda, por lo que cambio es estado de 'loading' a true.
             await dispatch(getRecipesByName(recipeName));   // Envio al reducer la action de busqueda por nombre. Evito con en 'await' que se lea la linea siguiente antes de tiempo.
             setCurrentPage(1);
+            orderRef.current.value = 'DEFAULT';          // Seteo el select de ordenamiento en su valor inicial.
+            filterRef.current.value = 'All';           // Seteo el select de filtrado en su valor inicial.
             dispatch(changeLoadingState(false));         // Acaba de terminar una busqueda, por lo que cambio es estado de 'loading' a false.
         }
     }
@@ -121,7 +127,7 @@ export default function Home() {
 
                 <div className={s.order}>
                     <span>ORDER: </span>
-                    <select onChange={e => handleOrder(e)} defaultValue={"DEFAULT"} >  {/* Defino un select para ordenamiento alfabetico y por puntuación. */}
+                    <select onChange={e => handleOrder(e)} defaultValue={"DEFAULT"} ref={orderRef} >  {/* Defino un select para ordenamiento alfabetico y por puntuación. */}
                         <option value="DEFAULT" disabled>Select an order</option>
                         <optgroup label="Alphabetical Order">
                             <option value='alphAsc'>Ascending A ➜ Z</option>
@@ -138,7 +144,7 @@ export default function Home() {
 
                 <div className={s.filter}>
                     <span>FILTER: </span>
-                    <select onChange={e => handleFilterRecipesByDiet(e)}>    {/* Defino un select para filtrado, con las dietas que ya se cargaron en el estado global. */}
+                    <select onChange={e => handleFilterRecipesByDiet(e)} ref={filterRef}>    {/* Defino un select para filtrado, con las dietas que ya se cargaron en el estado global. */}
                         <option value='All'>All</option>
                         {
                             diets && diets.map((diet, i) => {

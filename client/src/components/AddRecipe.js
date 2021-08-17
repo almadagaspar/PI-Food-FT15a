@@ -35,9 +35,9 @@ export default function AddRecipe() {
 
 
 
-    function handleChange(e) {  // Para manejar los inputs del tipo: text, number y textarea.
+    function handleChange(e) {  // Para manejar tags del tipo: number, text y textarea.
 
-        switch (e.target.name) {   // Validacion para los campos 'score' y 'healthScore'
+        switch (e.target.name) {   // Control para los campos 'score' y 'healthScore'
             case 'score':
             case 'healthScore':
                 if (e.target.value < 1 || e.target.value > 99 || e.target.value.length > 2) { // Limito los números a ingresar.
@@ -74,12 +74,12 @@ export default function AddRecipe() {
     function handleSubmit(e) {   // Para controlar el boton de creación de una nueva receta.
         e.preventDefault();
 
-        if (input.name.trim() === '') {
+        if (input.name.trim() === '') {       // Validación para el campo 'name'.
             alert('The field "name" is required!');
             return;
         }
 
-        if (input.summary.trim() === '') {
+        if (input.summary.trim() === '') {       // Validación para el campo 'summary'.
             alert('The field "summary" is required!');
             return;
         }

@@ -27,7 +27,7 @@ async function loadDietsInDb() {
         })
     }
 };
-// loadDietsInDb();    // Descomentar esta linea si necesito que se vuelvan a cargar las dietas en mi DB.
+loadDietsInDb();    // Descomentar esta linea si necesito que se vuelvan a cargar las dietas en mi DB.
 
 
 

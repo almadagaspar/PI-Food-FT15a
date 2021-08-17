@@ -11,7 +11,7 @@ import s from "./Details.module.css"
 export default function Details(props) {
     const details = useSelector(state => state.details)
     const dispatch = useDispatch();
-    const [loading, setloading] = useState(true);  // Creo un estado local para almacenar dinamicamente el contenido del input con el nombre de la receta a buscar.
+    const [loading, setloading] = useState(true);  // Creo un estado local cuyo valor indica si actualmente se estan cargando los detalles de la receta.
 
     useEffect( () => {
         async function loadDetails() {
