@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
-import NavBar from './NavBar.js';
-import { addRecipe } from '../actions/index.js';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import s from "./AddRecipe.module.css"
-import Footer from './Footer.js';
+import { addRecipe } from '../actions/index.js';
 import { useHistory } from 'react-router-dom';
+import { getDiets } from '../actions/index.js'
+import NavBar from './NavBar.js';
+import Footer from './Footer.js';
+import s from "./AddRecipe.module.css"
+
 
 export default function AddRecipe() {
     const dispatch = useDispatch();
@@ -19,6 +21,18 @@ export default function AddRecipe() {
         instructions: "",
         diets: []
     })
+
+
+    // Realizo la carga de los diferentes tipos de dietas.
+    useEffect(() => {        
+        async function loadDiets() {
+            await dispatch(getDiets())     
+        };
+        loadDiets();
+    }, [dispatch]); 
+
+
+
 
 
     function handleChange(e) {  // Para manejar los inputs del tipo: text, number y textarea.

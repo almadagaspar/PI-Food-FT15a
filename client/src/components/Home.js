@@ -28,7 +28,7 @@ export default function Home() {
     const firstRecipe = firstRecipeNextPage - recipesPerPage;      // 'firstRecipe' es el indice de la primer receta de la pagina actual. 
     const currentRecipes = recipes.slice(firstRecipe, firstRecipeNextPage);     // 'currentRecipes' son las recetas que se renderizaran en la pagina actual.
 
-    const paginado = (pageNumber) => {  // Función que cambia la página que debe mostrarse.
+    const changePage = (pageNumber) => {  // Función que cambia la página que debe mostrarse.
         setCurrentPage(pageNumber)
     }
 
@@ -48,7 +48,7 @@ export default function Home() {
 
 
 
-    function handleChange(e) {  // Se ejecutará cada vez que cambia el contenido del imput para así mantener actualizado el estado local con el nombre de la receta a buscar.
+    function handleChange(e) {  // Se ejecutará cada vez que cambia el contenido del input para así mantener actualizado el estado local con el nombre de la receta a buscar.
         setRecipeName(e.target.value);
     }
 
@@ -73,10 +73,25 @@ export default function Home() {
 
 
 
+    function handleOrder(e) {
+        setCurrentPage(1)
+
+        // Ordeno una copia de cada estado porque usando Redux los estados solo se deben modificar en el Reducer. 
+        let sortedRecipes = [...recipes];   // Para ordenar 'recipes'
+        sortedRecipes = sortArray(sortedRecipes, e.target.value);
+        dispatch(changeOrder(sortedRecipes));
+
+        let sortedRecipesBkp = [...recipesBkp]; // Para ordenar 'recipesBkp'
+        sortedRecipesBkp = sortArray(sortedRecipesBkp, e.target.value);
+        dispatch(changeOrderBkp(sortedRecipesBkp));
+    }
+
+
+
     // Con esta función ordeno 'recipes' y 'recipesBkp'.
     function sortArray(arrayToSort, sortType) {
         // El método .sort() INVIERTE el orden de los elementos comparados si su RETURN devuelve un número POSITIVO
-        // En cuantoa a STRINGS: las letras cercanas a 'a' son menores a las cercanas a 'z'. Las letras mayúsculas son menores a las minusculas, y las números son menores a las letras ('5' < 'M').
+        // En cuanto a STRINGS: las letras cercanas a 'a' son menores a las cercanas a 'z'. Las letras mayúsculas son menores a las minusculas, y las números son menores a las letras ('5' < 'M').
         if (sortType === 'alphAsc') {
             arrayToSort.sort((a, b) => { return (a.name.toLowerCase() < b.name.toLowerCase()) ? -1 : 1; });  // Lemon
         };
@@ -94,24 +109,6 @@ export default function Home() {
 
 
 
-    function handleOrder(e) {
-        setCurrentPage(1)
-
-        // Ordeno una copia de cada estado porque usando Redux los estados solo se deben modificar en el Reducer. 
-        let sortedRecipes = [...recipes];   // Para ordenar 'recipes'
-        sortedRecipes = sortArray(sortedRecipes, e.target.value);
-        dispatch(changeOrder(sortedRecipes));
-
-        let sortedRecipesBkp = [...recipesBkp]; // Para ordenar 'recipesBkp'
-        sortedRecipesBkp = sortArray(sortedRecipesBkp, e.target.value);
-        dispatch(changeOrderBkp(sortedRecipesBkp));
-    }
-
-
-
-
-
-    // ***** En el input de busqueda tiene un value={recipeName}, probar usar algo pareceido para llevar el filtro a All despues de una nueva busqueda.
 
     return (
         <div className={s.home}>
@@ -155,7 +152,7 @@ export default function Home() {
                 </div>
             </div>
 
-            <Pagination recipesPerPage={recipesPerPage} recipes={recipes.length} paginado={paginado} currentPage={currentPage}/>
+            <Pagination recipesPerPage={recipesPerPage} recipes={recipes.length} changePage={changePage} currentPage={currentPage}/>
 
             <div className={s.cards_container}>
                 {
