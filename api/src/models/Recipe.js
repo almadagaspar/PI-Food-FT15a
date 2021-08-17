@@ -24,16 +24,16 @@ module.exports = (sequelize) => {
     },
 
     score: {             // Puntiación. Aparece en la API como 'spoonacularScore'.
-      type: DataTypes.DECIMAL,
+      type: DataTypes.INTEGER,
       allowNull: true,
-      defaultValue: 0.0
+      defaultValue: 0
 
     },
 
     healthScore: {        // Nivel de comida saludable. Aparece en la API como 'healthScore'.
-      type: DataTypes.DECIMAL,
+      type: DataTypes.INTEGER,
       allowNull: true,
-      defaultValue: 0.0
+      defaultValue: 0
     },
 
     instructions: {      // Paso a paso. Aparece en la API como 'instructions'.  

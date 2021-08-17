@@ -12,13 +12,13 @@
     justify-content: center;
     align-items: center;
     width: 40px;
-    height: 25px;
+    height: 23px;
     margin-left: 5px;
     margin-right: 5px;
 
     font-size: 17px;
     color: rgb(223, 222, 165);
-    border: 2px rgba(255, 255, 255, 0.493) solid;
+    border: 2px rgba(3, 3, 3, 0.294) solid;
     border-radius: 10px;
     background-color: rgb(114, 64, 0);
 }
@@ -31,11 +31,13 @@
 
 
 .pagination .current_page {
-    font-size: 21px;
-    color: rgb(255, 19, 19)
+    font-size: 20px;
+    background-color: rgb(200, 114, 0);
+    color: rgb(255, 244, 225);
 }
 
 .pagination .current_page:hover {
-    font-size: 21px;
-    color: rgb(255, 19, 19)
+    font-size: 20px;
+    background-color: rgb(200, 114, 0);
+    color: rgb(255, 244, 225);
 }

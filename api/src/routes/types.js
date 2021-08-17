@@ -10,8 +10,7 @@ const { Diet } = require('../db.js');   // Importo el modelo que necesito hacien
 //  http://localhost:3001/types
 
 
-// El metodo de abajo solo recolecta 9 de las 10 dietas existentes. Además las dietas obtenidas no coniciden 100% con las que estan en la lista oficial.
-// Dietas obtenidas: gluten free, dairy free, lacto ovo vegetarian, vegan, paleolithic, primal, pescatarian, fodmap friendly, whole 30, vegetarian
+// Función para almacenar en mi DB los 10 tipos diferentes de dietas. 
 async function loadDietsInDb() {
     const recipesAPI = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`)  // Busco 100 recetas en la API externa...
     let diets = recipesAPI.data.results.map(recipe => {      //... de las cuales solo necesito las dietas.
@@ -28,13 +27,9 @@ async function loadDietsInDb() {
         })
     }
 };
-// loadDietsInDb();    
-// Descomentar esta linea si necesito que se vuelvan a cargar las dietas en mi DB.
-// 1) Poner conn.sync({ force: false })  en true.
-// 2) Descometar la linea y levantar el Front y el Back Antes poner:   
-// 3) Regresar conn.sync({ force: false })  a false.
-// 4) Bajar y volver a levantar el Front y el Back.
-// 2) Comentar nuevamente esta linea para que no se ejecute innecesariamente.
+// loadDietsInDb();    // Descomentar esta linea si necesito que se vuelvan a cargar las dietas en mi DB.
+
+
 
 
 

@@ -24,29 +24,30 @@ router.get('/', async (req, res) => {
         const dbRecipesByName = dbRecipes.filter(recipe => recipe.name.toLowerCase().includes(req.query.name.toLowerCase()))
 
 
+        //  Cambio la estructura de la propiedad incluida 'diets' para que sea un array de strings en lugar de un array de objetos. 
         const dbRecipesFormated = formatChange(dbRecipesByName);
 
 
         let apiRecipes = []
         try {
-            apiRecipes = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=4&query=${req.query.name}`)
+            apiRecipes = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=20&query=${req.query.name}`)
         } catch (error) {
             console.log("Se genero un error en el back al buscar por nombre", error)
         }
 
         const apiRecipesWithDiets = apiRecipes.data.results && apiRecipes.data.results.map(recipe => {
             // Las dietas a las que pertenece cada receta estan en dos lugares distintos, por lo que tengo que unirlas pero evitando que se repitan.
-            let extraDiets = [];
-            if (recipe.vegetarian && !recipe.diets.includes('vegetarian')) extraDiets.push('vegetarian');
-            if (recipe.vegan && !recipe.diets.includes('vegan')) extraDiets.push('vegan');
-            if (recipe.glutenFree && !recipe.diets.includes('gluten free')) extraDiets.push('gluten free');
+            let initialDiets = [];
+            if (recipe.vegetarian && !recipe.diets.includes('vegetarian')) initialDiets.push('vegetarian');
+            if (recipe.vegan && !recipe.diets.includes('vegan')) initialDiets.push('vegan');
+            if (recipe.glutenFree && !recipe.diets.includes('gluten free')) initialDiets.push('gluten free');
 
             return {      // De cada receta obtenida, solo debo enviar: la imágen, el nombre y las dietas a las que pertenece. 
                 id: recipe.id,    // Envio el 'id' tambien para poder despues ver los detalles de una receta al hacerle click.
                 image: recipe.image,
                 name: recipe.title,
                 score: recipe.spoonacularScore,
-                diets: extraDiets.concat(recipe.diets)  // Junto todas las dietas de esta receta.
+                diets: initialDiets.concat(recipe.diets)  // Junto todas las dietas de esta receta.
             }
         })
         const recipesToSend = dbRecipesFormated.concat(apiRecipesWithDiets);
@@ -66,26 +67,26 @@ router.get('/', async (req, res) => {
             }
         })
 
-
+        //  Cambio la estructura de la propiedad incluida 'diets' para que sea un array de strings en lugar de un array de objetos. 
         const dbRecipesFormated = formatChange(dbRecipes);
 
 
         // Para obtener mayor información sobre las recetas, como por ejemplo el tipo de dieta, agrego el flag: &addRecipeInformation=true
-        const recipesAPI = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=4`)
+        const recipesAPI = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=20`)
 
         const recipesToSend = recipesAPI.data.results.map(recipe => {
             // Las dietas a las que pertenece cada receta estan en dos lugares distintos, por lo que tengo que unirlas pero evitando que se repitan.
-            let extraDiets = [];
-            if (recipe.vegetarian && !recipe.diets.includes('vegetarian')) extraDiets.push('vegetarian');
-            if (recipe.vegan && !recipe.diets.includes('vegan')) extraDiets.push('vegan');
-            if (recipe.glutenFree && !recipe.diets.includes('gluten free')) extraDiets.push('gluten free');
+            let initialDiets = [];
+            if (recipe.vegetarian && !recipe.diets.includes('vegetarian')) initialDiets.push('vegetarian');
+            if (recipe.vegan && !recipe.diets.includes('vegan')) initialDiets.push('vegan');
+            if (recipe.glutenFree && !recipe.diets.includes('gluten free')) initialDiets.push('gluten free');
 
             return {      // De cada receta obtenida, solo debo enviar: la imágen, el nombre y las dietas a las que pertenece. 
                 id: recipe.id,    // Envio el 'id' tambien para poder despues ver los detalles de una receta al hacerle click.
                 image: recipe.image,
                 name: recipe.title,
                 score: recipe.spoonacularScore,
-                diets: extraDiets.concat(recipe.diets)  // Junto todas las dietas de esta receta.
+                diets: initialDiets.concat(recipe.diets)  // Junto todas las dietas de esta receta.
             }
         })
 
@@ -96,10 +97,10 @@ router.get('/', async (req, res) => {
 
 
 
-//  Cambio la estructura de la propiedad incluida 'diets' para que sea un array de strings en lugar de un array de objetos. 
 //  "diets": [ { "name": "Ketogenic" }, { "name": "Pescetarian" } ]       =====>     "diets": ["Ketogenic", "Pescetarian" ]
 function formatChange(recipesToFormat) {
     let dbRecipesFormated = [];
+
     for (let i = 0; i < recipesToFormat.length; i++) {
         let recipeFormated = {         // Esta variable representa cada elemento del array de recetas encontradas en la base de datos
             id: recipesToFormat[i].id,
@@ -109,6 +110,7 @@ function formatChange(recipesToFormat) {
         }
         dbRecipesFormated.push(recipeFormated)
     }
+
     return dbRecipesFormated;
 }
 
