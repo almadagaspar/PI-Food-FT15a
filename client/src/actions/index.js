@@ -61,7 +61,7 @@ export function getRecipesByName(name) {  // Buscar recetas por nombre.
 }
 
 
-export function getDetails(id) {
+export function getDetails(id) {      // Busca los detalles de una receta.
   return async function (dispatch) {
     try {
       let resp = await axios.get('http://localhost:3001/recipe/' + id);
@@ -76,7 +76,7 @@ export function getDetails(id) {
 }
 
 
-export function addRecipe(payload) {
+export function addRecipe(payload) {       // Agregar una receta a mi DB.
   return async function () {
     const resp = await axios.post('http://localhost:3001/recipe', payload);
     return resp;
@@ -95,7 +95,7 @@ export function changeLoadingState(payload) {   // Para invertir el valor del es
 }
 
 
-export function filterRecipesByDiet(payload) {
+export function filterRecipesByDiet(payload) {     // Para filtrar recetas por la dieta elegida.
   return async function (dispatch) {
     dispatch({
       type: 'FILTER_RECIPES_BY_DIET',
@@ -105,7 +105,7 @@ export function filterRecipesByDiet(payload) {
 }
 
 
-export function changeOrder(payload) {    // Cambio el orden del estado 'recipes'
+export function changeOrder(payload) {    // Cambio el orden del estado 'recipes'.
   return async function (dispatch) {
     dispatch({
       type: CHANGE_ORDER,
@@ -115,7 +115,7 @@ export function changeOrder(payload) {    // Cambio el orden del estado 'recipes
 }
 
 
-export function changeOrderBkp(payload) {    // Cambio el orden del estado 'recipesBkp'
+export function changeOrderBkp(payload) {    // Cambio el orden del estado 'recipesBkp'.
   return async function (dispatch) {
     dispatch({
       type: CHANGE_ORDER_BKP,

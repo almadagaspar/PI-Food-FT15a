@@ -28,7 +28,7 @@ export default function Home() {
     const firstRecipe = firstRecipeNextPage - recipesPerPage;      // 'firstRecipe' es el indice de la primer receta de la pagina actual. 
     const currentRecipes = recipes.slice(firstRecipe, firstRecipeNextPage);     // 'currentRecipes' son las recetas que se renderizaran en la pagina actual.
 
-    const changePage = (pageNumber) => {  // Función que cambia la página que debe mostrarse.
+    function changePage(pageNumber) {  // Función que cambia la página que debe mostrarse.
         setCurrentPage(pageNumber)
     }
 
@@ -75,14 +75,11 @@ export default function Home() {
 
     function handleOrder(e) {
         setCurrentPage(1)
-
         // Ordeno una copia de cada estado porque usando Redux los estados solo se deben modificar en el Reducer. 
-        let sortedRecipes = [...recipes];   // Para ordenar 'recipes'
-        sortedRecipes = sortArray(sortedRecipes, e.target.value);
+        let sortedRecipes = sortArray([...recipes], e.target.value);  // Para ordenar 'recipes'
         dispatch(changeOrder(sortedRecipes));
 
-        let sortedRecipesBkp = [...recipesBkp]; // Para ordenar 'recipesBkp'
-        sortedRecipesBkp = sortArray(sortedRecipesBkp, e.target.value);
+        let sortedRecipesBkp = sortArray([...recipesBkp], e.target.value);  // Para ordenar 'recipesBkp'
         dispatch(changeOrderBkp(sortedRecipesBkp));
     }
 
@@ -93,16 +90,16 @@ export default function Home() {
         // El método .sort() INVIERTE el orden de los elementos comparados si su RETURN devuelve un número POSITIVO
         // En cuanto a STRINGS: las letras cercanas a 'a' son menores a las cercanas a 'z'. Las letras mayúsculas son menores a las minusculas, y las números son menores a las letras ('5' < 'M').
         if (sortType === 'alphAsc') {
-            arrayToSort.sort((a, b) => { return (a.name.toLowerCase() < b.name.toLowerCase()) ? -1 : 1; });  // Lemon
+            arrayToSort.sort((a, b) => { return (a.name.toLowerCase() < b.name.toLowerCase()) ? -1 : 1 });
         };
         if (sortType === 'alphDes') {
-            arrayToSort.sort((a, b) => { return (a.name.toLowerCase() > b.name.toLowerCase()) ? -1 : 1; });
+            arrayToSort.sort((a, b) => { return (a.name.toLowerCase() > b.name.toLowerCase()) ? -1 : 1 });
         };
         if (sortType === 'scoreAsc') {
-            arrayToSort.sort((a, b) => { return a.score - b.score; });
+            arrayToSort.sort((a, b) => { return a.score - b.score });
         };
         if (sortType === 'scoreDes') {
-            arrayToSort.sort((a, b) => { return b.score - a.score; });
+            arrayToSort.sort((a, b) => { return b.score - a.score });
         };
         return arrayToSort;
     }
@@ -152,7 +149,7 @@ export default function Home() {
                 </div>
             </div>
 
-            <Pagination recipesPerPage={recipesPerPage} recipes={recipes.length} changePage={changePage} currentPage={currentPage}/>
+            <Pagination recipesPerPage={recipesPerPage} recipes={recipes.length} changePage={changePage} currentPage={currentPage} />
 
             <div className={s.cards_container}>
                 {
