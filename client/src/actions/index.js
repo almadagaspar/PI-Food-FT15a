@@ -30,7 +30,7 @@ export function getRecipes() {
 }
 
 
-export function getDiets() {
+export function getDiets() {   // Busco las diferentes tipos de dietas en mi DB.
   return function (dispatch) {
     return axios.get('http://localhost:3001/types')
       .then(obj => {
@@ -105,7 +105,7 @@ export function filterRecipesByDiet(payload) {
 }
 
 
-export function changeOrder(payload) {
+export function changeOrder(payload) {    // Cambio el orden del estado 'recipes'
   return async function (dispatch) {
     dispatch({
       type: CHANGE_ORDER,
@@ -115,7 +115,7 @@ export function changeOrder(payload) {
 }
 
 
-export function changeOrderBkp(payload) {
+export function changeOrderBkp(payload) {    // Cambio el orden del estado 'recipesBkp'
   return async function (dispatch) {
     dispatch({
       type: CHANGE_ORDER_BKP,

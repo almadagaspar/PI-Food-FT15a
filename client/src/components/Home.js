@@ -23,7 +23,7 @@ export default function Home() {
 
     // PAGINADO:
     const recipesPerPage = 9;                   // Cantidad máxima de recetas que se mostrarán en una página.  
-    const [currentPage, setCurrentPage] = useState(1);  // Numero de la pagina cuyas recetas se estan mostrando actualmente.
+    const [currentPage, setCurrentPage] = useState(1);  // Numero de la pagina donde estoy actualmente.
     const firstRecipeNextPage = currentPage * recipesPerPage;      // 'firstRecipeNextPage' es el indice de la primer receta de la siguente página.
     const firstRecipe = firstRecipeNextPage - recipesPerPage;      // 'firstRecipe' es el indice de la primer receta de la pagina actual. 
     const currentRecipes = recipes.slice(firstRecipe, firstRecipeNextPage);     // 'currentRecipes' son las recetas que se renderizaran en la pagina actual.

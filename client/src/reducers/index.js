@@ -24,7 +24,7 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         recipes: action.payload,
-        recipesBkp: [...action.payload],   // Creo una copia de todas las recetas obtenidas para usarlo como BackUp en el filtrado.
+        recipesBkp: [...action.payload]   // Creo una copia de todas las recetas obtenidas para usarlo como BackUp en el filtrado.
       }
 
     case GET_DIETS:
@@ -37,14 +37,13 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         recipes: action.payload,
-        recipesBkp: action.payload
+        recipesBkp: [...action.payload]   // Creo una copia de todas las recetas obtenidas para usarlo como BackUp en el filtrado.
       }
 
     case CHANGE_LOADING_STATE:
       return {
         ...state,
         loading: action.payload
-
       }
 
 

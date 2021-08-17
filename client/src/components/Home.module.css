@@ -39,7 +39,9 @@
     border-radius: 10px;
     border-color: rgb(202, 138, 0);
     height: 30px;
-    font-size: 15px;
+    font-size: 13px;
+    font-weight: bold;
+    color: rgb(122, 24, 0);
     margin-left: 10px;
 }
 .searchOrderFilter button:hover {

@@ -17,27 +17,27 @@
     margin-right: 5px;
 
     font-size: 17px;
-    color: rgb(223, 222, 165);
+    color: rgb(219, 202, 146);
     border: 2px rgba(3, 3, 3, 0.294) solid;
     border-radius: 10px;
-    background-color: rgb(114, 64, 0);
+    background-color: rgb(148, 84, 0);
 }
 
 
 .pagination span:hover {
-    font-size: 21px;
+    font-size: 19px;
     color: rgb(255, 254, 220);
 }
 
 
 .pagination .current_page {
-    font-size: 20px;
-    background-color: rgb(200, 114, 0);
+    font-size: 19px;
+    background-color: rgb(216, 135, 28);
     color: rgb(255, 244, 225);
 }
 
 .pagination .current_page:hover {
-    font-size: 20px;
-    background-color: rgb(200, 114, 0);
+    font-size: 19px;
+    background-color: rgb(216, 135, 28);
     color: rgb(255, 244, 225);
 }
