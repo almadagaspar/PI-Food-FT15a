@@ -12,7 +12,7 @@ const { Recipe, Diet } = require('../db.js');     // Importo los modelos que nec
 
 
 router.get('/', async (req, res) => {
-    if (req.query.name) {      // Si se envió un nombre de receta para la busqueda, retorno las 100 recetas cuyo nombre incluya la palabra recibida.
+    if (req.query.name) {      // Si se envió un nombre de receta para la busqueda, retorno las recetas de la API externa y de mi DB cuyo nombre incluya la palabra recibida.
         const dbRecipes = await Recipe.findAll({
             attributes: ['id', 'name', 'score'],     // Solo quiero estos campos.
             include: {                              // Incluto las dietas relacionadas a esta receta.
@@ -25,12 +25,13 @@ router.get('/', async (req, res) => {
 
 
         //  Cambio la estructura de la propiedad incluida 'diets' para que sea un array de strings en lugar de un array de objetos. 
+        //  "diets": [ { "name": "Ketogenic" }, { "name": "Pescetarian" } ]       =====>     "diets": ["Ketogenic", "Pescetarian" ]
         const dbRecipesFormated = formatChange(dbRecipesByName);
 
 
-        let apiRecipes = []
+        // let apiRecipes = []
         try {
-            apiRecipes = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100&query=${req.query.name}`)
+            var apiRecipes = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100&query=${req.query.name}`)
         } catch (error) {
             console.log("Se genero un error en el back al buscar por nombre", error)
         }
@@ -68,6 +69,7 @@ router.get('/', async (req, res) => {
         })
 
         //  Cambio la estructura de la propiedad incluida 'diets' para que sea un array de strings en lugar de un array de objetos. 
+        //  "diets": [ { "name": "Ketogenic" }, { "name": "Pescetarian" } ]       =====>     "diets": ["Ketogenic", "Pescetarian" ]
         const dbRecipesFormated = formatChange(dbRecipes);
 
 

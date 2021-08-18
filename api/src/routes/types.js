@@ -27,14 +27,14 @@ async function loadDietsInDb() {
         })
     }
 };
-loadDietsInDb();    // Descomentar esta linea si necesito que se vuelvan a cargar las dietas en mi DB.
+// loadDietsInDb();    // Descomentar esta linea si necesito que se vuelvan a cargar las dietas en mi DB.
 
 
 
 
 
 router.get('/', async (req, res) => {
-    const dietsDb = await Diet.findAll();   // Busco todos los registros de la tabla 'diets' de mi BDD.
+    const dietsDb = await Diet.findAll();   // Busco todos los registros ( id y nombre )de la tabla 'diets' de mi BDD.
     
     dietsDb.length ?
     res.json(dietsDb) :
